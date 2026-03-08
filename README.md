@@ -1,2 +1,2 @@
 # dataset-analyzer-toolbox
-Repo for Aplications of Data Science Course Term Project
+Repo for Practical Applications of Data Science Course Term Project
