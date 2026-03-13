@@ -6,7 +6,7 @@ class Footer:
 
     def footer(self) -> html.Div:
         return html.Div(
-            [html.Span("Copyright © 2026 Uygar Kaya - Practical Application of Data Science Course")],
+            # [html.Span("Copyright © 2026 Uygar Kaya - Practical Application of Data Science Course")],
             id="footer-general",
             className="footer-general",
             style={

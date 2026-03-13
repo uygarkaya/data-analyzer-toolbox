@@ -1,4 +1,4 @@
-from view.dataset_analyzer_toolbox import DatasetAnalyzerToolbox
+from core.view.dataset_analyzer_toolbox import DatasetAnalyzerToolbox
 from configuration.configuration import Configuration
 
 class DatasetAnalyzerApplication:

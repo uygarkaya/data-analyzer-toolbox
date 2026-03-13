@@ -6,3 +6,10 @@ class Configuration:
         self.environment: Environment = Environment.get_instance()
         self.system_host: str = self.environment['HOST']
         self.system_port: str = self.environment['PORT']
+        self.tabs: Dict[str, str] = {
+            "tab-fetch": "Fetch Datasets",
+            "tab-eda": "Exploratory Data Analysis",
+            "tab-clean": "Clean Data",
+            "tab-train": "Train Model",
+            "tab-evaluate": "Evaluate",
+        }

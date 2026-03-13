@@ -1,6 +1,7 @@
 from dash import Dash, html
 from .components.header import Header
 from .components.footer import Footer
+from .components.center import Center
 
 import dash_bootstrap_components as dbc
 
@@ -29,7 +30,7 @@ class DatasetAnalyzerToolbox:
                 Header().header(),
                 html.Div(
                     children=[
-                        html.Div(id='page-content', style={'flex': 1, 'overflowY': 'auto'}),
+                        Center().center(),
                     ],
                     style={
                         'flex': 1,
