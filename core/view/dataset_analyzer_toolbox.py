@@ -37,6 +37,7 @@ class DatasetAnalyzerToolbox:
                         'overflowY': 'auto',
                         'marginBottom': '3em',
                         'display': 'flex',
+                        'height': '100%',
                     },
                 ),
                 Footer().footer(),

@@ -33,6 +33,7 @@ class Center:
                     [],
                     style={
                         "display": "flex",
+                        "flex": 1,
                         "alignItems": "flex-start",
                         "padding": "20px 24px",
                         "backgroundColor": LIGHT["surface"],
@@ -66,6 +67,9 @@ class Center:
                         "borderRadius": "14px",
                         "border": f"1px solid {LIGHT['border']}",
                         "overflow": "hidden",
+                        "display": "flex",
+                        "flexDirection": "column",
+                        "flex": 1
                     },
                 )
             ],
@@ -73,6 +77,8 @@ class Center:
                 "display": "flex",
                 "flexDirection": "column",
                 "width": "100%",
+                "height": "100%",
+                "flex": 1,
                 "paddingLeft": "1rem",
                 "paddingRight": "1rem",
                 "fontFamily": "sans-serif",

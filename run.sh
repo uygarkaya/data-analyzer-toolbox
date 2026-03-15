@@ -8,7 +8,7 @@ source venv/bin/activate
 
 # run application
 echo "Running Application..."
-python main.py
+python3 main.py
 
 # deactivate environment after exit
 echo "Deactivating Virtual Environment..."
