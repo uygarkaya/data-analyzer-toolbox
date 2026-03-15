@@ -1,3 +1,4 @@
+from core.view.components.tabs.fetch_data import FetchData
 from configuration.environment import Environment
 from typing import Dict
 
@@ -12,4 +13,8 @@ class Configuration:
             "tab-clean": "Clean Data",
             "tab-train": "Train Model",
             "tab-evaluate": "Evaluate",
+        }
+
+        self.tabs_components = {
+            "tab-fetch": FetchData
         }

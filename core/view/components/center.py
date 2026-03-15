@@ -6,6 +6,14 @@ from utils.constants import LIGHT, TAB_ACCENT
 class Center:
     def __init__(self) -> None:
         self.config = Configuration()
+    
+    def get_tab_content(self, tab_id, tab_label):
+        component = self.config.tabs_components.get(tab_id)
+
+        if component:
+            return component().content()
+
+        return html.Div(f"{tab_label} Content")
 
     def build_tab(self, tab_id: str, tab_label: str, index: int) -> dbc.Tab:
         accent = TAB_ACCENT.get(index, {"color": LIGHT["sub"], "bg": LIGHT["surface2"]})
@@ -30,7 +38,9 @@ class Center:
             },
             children=[
                 html.Div(
-                    [],
+                    [
+                        self.get_tab_content(tab_id, tab_label)                            
+                    ],
                     style={
                         "display": "flex",
                         "flex": 1,
