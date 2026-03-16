@@ -34,6 +34,7 @@ class DatasetAnalyzerToolbox:
                     ],
                     style={
                         'flex': 1,
+                        'minHeight': 0,
                         'overflowY': 'auto',
                         'marginBottom': '3em',
                         'display': 'flex',

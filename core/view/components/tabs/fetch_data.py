@@ -1,6 +1,5 @@
-import dash_bootstrap_components as dbc
-from dash import html, dcc
-
+from dash import html, dcc 
+import dash_bootstrap_components as dbc 
 
 class FetchData:
     def __init__(self) -> None:
@@ -23,96 +22,62 @@ class FetchData:
                     style={"marginBottom": "15px"}
                 ),
 
-                dbc.Tabs(
+                dbc.Card(
                     [
-                        dbc.Tab(
-                            dbc.Card(
-                                dbc.CardBody(
-                                    [
-                                        dcc.Upload(
-                                            id="upload-dataset",
-                                            children=html.Div(
-                                                [
-                                                    html.Div("Drag & Drop CSV File Here!"),
-                                                    html.Small("or Click to Select File")
-                                                ],
-                                                style={"textAlign": "center"}
-                                            ),
-                                            style={
-                                                "width": "100%",
-                                                "height": "120px",
-                                                "borderWidth": "2px",
-                                                "borderStyle": "dashed",
-                                                "borderRadius": "10px",
-                                                "display": "flex",
-                                                "alignItems": "center",
-                                                "justifyContent": "center",
-                                                "cursor": "pointer"
-                                            },
-                                            multiple=False
-                                        )
-                                    ]
-                                )
-                            ), 
-                            label="Upload File"
-                        ),
-                        dbc.Tab(
-                            dbc.Card(
-                                dbc.CardBody(
-                                [
-                                    html.H6("Select a sample dataset to load:"),
-                                    dbc.ListGroup(
-                                        [
-                                            dbc.ListGroupItem("01 - Dataset: Iris", id="sample-iris", action=True),
-                                            dbc.ListGroupItem("02 - Dataset: Titanic", id="sample-titanic", action=True),
-                                            dbc.ListGroupItem("03 - Dataset: Wine Quality", id="sample-wine", action=True),
-                                        ]
+                        dbc.CardHeader(
+                            dcc.Tabs(
+                                id="fetch-data-tabs",
+                                value="fetch-data-upload",
+                                children=[
+                                    dcc.Tab(
+                                        label=label,
+                                        value=value,
+                                        style={
+                                            "padding": "6px 14px",
+                                            "fontSize": "0.80rem",
+                                            "fontWeight": "700",
+                                            "letterSpacing": "0.05em",
+                                            "textTransform": "uppercase",
+                                            "border": "none",
+                                            "backgroundColor": "transparent"
+                                        },
+                                        selected_style={
+                                            "padding": "6px 14px",
+                                            "fontSize": "0.80rem",
+                                            "fontWeight": "700",
+                                            "letterSpacing": "0.05em",
+                                            "textTransform": "uppercase",
+                                            "border": "none",
+                                            "backgroundColor": "transparent",
+                                            "borderBottom": "2px solid #0d6efd",
+                                            "color": "#0D6EFD"
+                                        },
                                     )
-                                ]
-                            )),
-                            label="Sample Datasets"
-                        ),
-                        dbc.Tab(
-                            dbc.Card(
-                                dbc.CardBody(
-                                    [
-                                        dbc.Row(
-                                            [
-                                                dbc.Col(
-                                                    dbc.Input(
-                                                        id="api-url",
-                                                        placeholder="Enter API endpoint returning JSON / CSV",
-                                                        type="text"
-                                                    ),
-                                                    width=9
-                                                ),
-
-                                                dbc.Col(
-                                                    dbc.Button(
-                                                        "Fetch Data",
-                                                        id="fetch-api-btn",
-                                                        color="primary",
-                                                        className="w-100"
-                                                    ),
-                                                    width=3
-                                                )
-                                            ]
-                                        ),
-
-                                        html.Small(
-                                            "Example: https://api.example.com/dataset",
-                                            style={"color": "#6c757d"}
-                                        )
+                                    for label, value in [
+                                        ("UPLOAD FILE", "fetch-data-upload"),
+                                        ("SAMPLE DATASETS", "fetch-data-sample"),
+                                        ("FETCH FROM API", "fetch-data-api"),
                                     ]
-                                )
-                            ), 
-                            label="Fetch from API"
+                                ],
+                                parent_style={
+                                    "height": "38px",
+                                    "borderBottom": "1px solid #E9ECEF",
+                                },
+                            )
                         ),
-                    ]
+
+                        dbc.CardBody(
+                            html.Div(id="fetch-data-tab-content")
+                        )
+                    ],
+                    style={
+                        "borderRadius": "16px",
+                        "overflow": "hidden",
+                        "boxShadow": "0 4px 15px rgba(0,0,0,0.1)"
+                    },
+                    className="shadow-sm"
                 ),
-
                 html.Hr(),
-
                 dbc.Card(
                     [
                         dbc.CardHeader(
@@ -129,16 +94,14 @@ class FetchData:
                                 "No Dataset Loaded Yet!",
                                 id="dataset-preview",
                                 style={
-                                    "color": "#6c757d",
+                                    "color": "#6C757D",
                                     "textAlign": "center",
                                     "padding": "30px"
                                 }
                             )
                         )
                     ],
-                    style={
-                        "borderRadius": "16px"
-                    },
+                    style={"borderRadius": "16px"},
                     className="shadow-sm"
                 )
             ],
