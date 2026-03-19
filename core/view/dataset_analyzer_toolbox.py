@@ -1,8 +1,7 @@
-from dash import Dash, html
+from dash import Dash, html, dcc
 from .components.header import Header
 from .components.footer import Footer
 from .components.center import Center
-
 import dash_bootstrap_components as dbc
 
 class DatasetAnalyzerToolbox:
@@ -18,6 +17,7 @@ class DatasetAnalyzerToolbox:
         )
 
         self.app.layout = self.serve_app_layout()
+        self.alert_id = "popup-notification"
     
     def serve_app_layout(self):
         return html.Div(
@@ -28,6 +28,15 @@ class DatasetAnalyzerToolbox:
             },
             children=[
                 Header().header(),
+                html.Div(
+                    id="upload-alert-container",
+                    style={
+                        "position": "fixed",
+                        # "top": "20px",
+                        "right": "20px",
+                        "zIndex": 9999,
+                    }
+                ),
                 html.Div(
                     children=[
                         Center().center(),
@@ -43,4 +52,12 @@ class DatasetAnalyzerToolbox:
                 ),
                 Footer().footer(),
             ]
+        )
+    
+    def generate_alert(self, message, color="success", duration=4000) -> dbc.Alert:
+        return dbc.Alert(
+            id=self.alert_id,
+            children=message,
+            color=color,
+            duration=duration,
         )

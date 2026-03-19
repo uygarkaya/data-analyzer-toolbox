@@ -18,3 +18,42 @@ class Configuration:
         self.tabs_components = {
             "tab-fetch": FetchData
         }
+
+        self.sample_datasets = [
+            {
+                "id": "iris-dataset",
+                "name": "01 - Iris Flowers Dataset",
+                "type": "classification",
+                "format": "csv",
+                "description": "Classic Multiclass Classification Dataset (150 rows x 5 cols)",
+                "url": "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv",
+                "target_col": "species",
+            },
+            {
+                "id": "titanic-dataset",
+                "name": "02 - Titanic Passengers Dataset",
+                "type": "classification",
+                "format": "csv",
+                "description": "Binary Survival Classification (891 rows x 12 cols)",
+                "url": "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv",
+                "target_col": "Survived",
+            },
+            {
+                "id": "california-housing-dataset",
+                "name": "03 - California Housing Dataset",
+                "type": "regression",
+                "format": "csv",
+                "description": "Median House Price Regression",
+                "url": "https://raw.githubusercontent.com/ageron/handson-ml2/master/datasets/housing/housing.csv",
+                "target_col": "median_house_value",
+            },
+            {
+                "id": "wine-dataset",
+                "name": "04 - Wine Quality Dataset",
+                "type": "regression",
+                "format": "csv",
+                "description": "Wine quality score regression (1599 rows x 12 cols)",
+                "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
+                "target_col": "quality",
+            },
+        ]

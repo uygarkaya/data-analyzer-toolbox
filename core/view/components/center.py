@@ -48,6 +48,8 @@ class Center:
                         "padding": "20px 24px",
                         "backgroundColor": LIGHT["surface"],
                         "border": f"1px solid {LIGHT['border']}",
+                        "overflowY": "auto",
+                        "maxHeight": "calc(100vh - 170px)"
                     },
                 )
             ],

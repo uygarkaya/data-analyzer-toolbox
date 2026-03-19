@@ -8,6 +8,7 @@ class FetchData:
     def content(self) -> html.Div:
         return html.Div(
             [
+                dcc.Store(id="stored-dataset", storage_type="memory"),
                 html.Div(
                     [
                         html.H4(
@@ -101,7 +102,11 @@ class FetchData:
                             )
                         )
                     ],
-                    style={"borderRadius": "16px"},
+                    style={
+                        "borderRadius": "16px",
+                        "overflowY": "auto",
+
+                    },
                     className="shadow-sm"
                 )
             ],

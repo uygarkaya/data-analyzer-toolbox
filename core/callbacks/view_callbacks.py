@@ -1,12 +1,15 @@
-from dash import html, dcc 
+from configuration.configuration import Configuration
+from core.view.dataset_analyzer_toolbox import DatasetAnalyzerToolbox
 from dash import callback, Output, Input 
-import dash_bootstrap_components as dbc 
+from dash import html, dcc 
+import dash_bootstrap_components as dbc
+import pandas as pd
 
 class ViewCallbacks:
-    def __init__(self) -> None:
-        pass
+    def __init__(self, view: DatasetAnalyzerToolbox) -> None:
+        self.view = view
 
-    def register_callbacks(self, app):
+    def register_callbacks(self):
         @callback(
             Output("fetch-data-tab-content", "children"),
             Input("fetch-data-tabs", "value")
@@ -17,36 +20,72 @@ class ViewCallbacks:
                     id="upload-dataset",
                     children=html.Div(
                         [
-                            html.Div("Drag & Drop File Here!"),
-                            html.Small("or Click to Select File"),
-                            html.Div("Supported Formats: CSV")
+                            html.Img(
+                                src="https://cdn-icons-png.flaticon.com/512/3097/3097412.png",
+                                style={
+                                    "width": "50px",
+                                    "marginBottom": "10px",
+                                    "opacity": "0.7"
+                                }
+                            ),
+                            html.Div(
+                                "Drag & Drop File Here",
+                                style={
+                                    "fontSize": "16px",
+                                    "fontWeight": "600",
+                                    "color": "#333"
+                                }
+                            ),
+                            html.Small(
+                                "or Click to Browse",
+                                style={"color": "#777"}
+                            ),
+                            html.Div(
+                                "Supported Format: CSV",
+                                style={
+                                    "marginTop": "5px",
+                                    "fontSize": "12px",
+                                    "color": "#999"
+                                }
+                            ),
                         ],
-                        style={"textAlign": "center"}
+                        style={
+                            "textAlign": "center",
+                            "display": "flex",
+                            "flexDirection": "column",
+                            "alignItems": "center",
+                            "justifyContent": "center",
+                        }
                     ),
                     style={
                         "width": "100%",
-                        "height": "120px",
+                        "height": "150px",
                         "borderWidth": "2px",
                         "borderStyle": "dashed",
-                        "borderRadius": "10px",
+                        "borderRadius": "16px",
+                        "borderColor": "#6C63FF",
                         "display": "flex",
                         "alignItems": "center",
                         "justifyContent": "center",
                         "cursor": "pointer",
-                        "transition": "all 0.2s",
-                        "backgroundColor": "#F8F9FA"
+                        "backgroundColor": "#F9FAFF",
+                        "transition": "all 0.3s ease",
+                        "boxShadow": "0 4px 12px rgba(0,0,0,0.05)",
                     },
                     multiple=False
                 )
             elif value == "fetch-data-sample":
                 return html.Div(
                     [
-                        html.H6("Select a sample dataset to load:"),
                         dbc.ListGroup(
                             [
-                                dbc.ListGroupItem("01 - Dataset: Iris", id="sample-iris", action=True, style={"transition": "all 0.2s"}),
-                                dbc.ListGroupItem("02 - Dataset: Titanic", id="sample-titanic", action=True, style={"transition": "all 0.2s"}),
-                                dbc.ListGroupItem("03 - Dataset: Wine Quality", id="sample-wine", action=True, style={"transition": "all 0.2s"}),
+                                dbc.ListGroupItem(
+                                    dataset["name"],
+                                    id={"type": "sample-dataset-btn", "index": dataset["id"]},
+                                    action=True,
+                                    color="light"
+                                )
+                                for dataset in Configuration().sample_datasets
                             ]
                         )
                     ]
@@ -73,3 +112,56 @@ class ViewCallbacks:
                         )
                     ]
                 )
+            
+        @callback(
+            Output("dataset-preview", "children"),
+            Input("stored-dataset", "data")
+        )
+        def update_preview(data):
+            if data is None:
+                return "No Dataset Loaded Yet!"
+
+            df = pd.DataFrame(data)
+
+            return html.Div(
+            [
+                # Dataset Info Cards
+                html.Div(
+                    [
+                        dbc.Badge(f"Rows: {df.shape[0]}", color="primary", className="me-2", pill=True),
+                        dbc.Badge(f"Columns: {df.shape[1]}", color="info", pill=True),
+                    ],
+                    style={"marginBottom": "10px"}
+                ),
+
+                html.H6("Preview (First 10 Rows):", style={"marginTop": "10px", "fontWeight": "600"}),
+                html.Div(
+                    dbc.Table.from_dataframe(
+                        df.head(10),
+                        striped=True,
+                        bordered=True,
+                        hover=True,
+                        size="sm",
+                        responsive=True,
+                    ),
+                    style={
+                        "maxHeight": "300px",
+                        "overflowY": "auto",
+                        "border": "1px solid #dee2e6",
+                        "borderRadius": "6px",
+                        "padding": "5px",
+                        "boxShadow": "inset 0 1px 3px rgba(0,0,0,0.1)",
+                        "backgroundColor": "#fff",
+                    }
+                )
+            ],
+            style={
+                "display": "flex",
+                "flexDirection": "column",
+                "gap": "8px",
+                "padding": "10px",
+                "backgroundColor": "#f8f9fa",
+                "borderRadius": "8px",
+                "boxShadow": "0 2px 8px rgba(0,0,0,0.05)"
+            }
+        )
