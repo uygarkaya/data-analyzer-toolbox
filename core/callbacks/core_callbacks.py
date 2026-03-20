@@ -1,7 +1,7 @@
-from dash import callback, Output, Input
+from dash import Output, Input
 from dash import ctx, ALL
 import pandas as pd
-import base64, io
+import base64, io, requests
 import dash_bootstrap_components as dbc
 
 from core.api.dataset import DatasetAPI
@@ -12,7 +12,7 @@ class CoreCallbacks:
         self.view = view
 
     def register_callbacks(self):
-        @callback(
+        @self.view.app.callback(
             Output("stored-dataset", "data", allow_duplicate=True),
             Output("upload-alert-container", "children", allow_duplicate=True),
             Input("upload-dataset", "contents"),
@@ -49,7 +49,7 @@ class CoreCallbacks:
                 )
                 return None, alert
             
-        @callback(
+        @self.view.app.callback(
             Output("stored-dataset", "data", allow_duplicate=True),
             Output("upload-alert-container", "children", allow_duplicate=True),
             Input({"type": "sample-dataset-btn", "index": ALL}, "n_clicks"),
@@ -71,3 +71,39 @@ class CoreCallbacks:
                 f"{entry['name']} Loaded Successfully!",
                 color="success"
             )
+        
+        @self.view.app.callback(
+            Output("stored-dataset", "data", allow_duplicate=True),
+            Output("upload-alert-container", "children", allow_duplicate=True),
+            Input("fetch-api-btn", "n_clicks"),
+            Input("api-url", "value"),
+            prevent_initial_call=True
+        )
+        def fetch_dataset_from_api(n_clicks, url):
+            if not n_clicks or not url:
+                return None, None
+
+            try:
+                response = requests.get(url)
+
+                if response.status_code != 200:
+                    alert = self.view.generate_alert(
+                        f"Failed to Fetch Data! Status Code: {response.status_code}",
+                        color="danger"
+                    )
+                    return None, alert
+
+                df = pd.read_csv(io.StringIO(response.text))
+                alert = self.view.generate_alert(
+                    "Dataset Fetched Successfully from API!",
+                    color="success"
+                )
+
+                return df.to_dict("records"), alert
+
+            except Exception as e:
+                alert = self.view.generate_alert(
+                    f"Error Fetching API Data: {str(e)}",
+                    color="danger"
+                )
+                return None, alert

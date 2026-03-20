@@ -1,6 +1,6 @@
 from configuration.configuration import Configuration
 from core.view.dataset_analyzer_toolbox import DatasetAnalyzerToolbox
-from dash import callback, Output, Input 
+from dash import Output, Input 
 from dash import html, dcc 
 import dash_bootstrap_components as dbc
 import pandas as pd
@@ -10,7 +10,7 @@ class ViewCallbacks:
         self.view = view
 
     def register_callbacks(self):
-        @callback(
+        @self.view.app.callback(
             Output("fetch-data-tab-content", "children"),
             Input("fetch-data-tabs", "value")
         )
@@ -113,7 +113,7 @@ class ViewCallbacks:
                     ]
                 )
             
-        @callback(
+        @self.view.app.callback(
             Output("dataset-preview", "children"),
             Input("stored-dataset", "data")
         )

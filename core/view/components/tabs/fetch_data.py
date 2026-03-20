@@ -28,7 +28,7 @@ class FetchData:
                         dbc.CardHeader(
                             dcc.Tabs(
                                 id="fetch-data-tabs",
-                                value="fetch-data-upload",
+                                value="fetch-data-sample",
                                 children=[
                                     dcc.Tab(
                                         label=label,
@@ -55,8 +55,8 @@ class FetchData:
                                         },
                                     )
                                     for label, value in [
-                                        ("UPLOAD FILE", "fetch-data-upload"),
                                         ("SAMPLE DATASETS", "fetch-data-sample"),
+                                        ("UPLOAD FILE", "fetch-data-upload"),
                                         ("FETCH FROM API", "fetch-data-api"),
                                     ]
                                 ],
