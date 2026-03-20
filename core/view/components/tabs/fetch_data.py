@@ -62,7 +62,6 @@ class FetchData:
                                 ],
                                 parent_style={
                                     "height": "38px",
-                                    "borderBottom": "1px solid #E9ECEF",
                                 },
                             )
                         ),
