@@ -134,10 +134,10 @@ class ViewCallbacks:
                     style={"marginBottom": "10px"}
                 ),
 
-                html.H6("Preview (First 10 Rows):", style={"marginTop": "10px", "fontWeight": "600"}),
+                html.H6("Preview (Sample 10 Rows):", style={"marginTop": "10px", "fontWeight": "600"}),
                 html.Div(
                     dbc.Table.from_dataframe(
-                        df.head(10),
+                        df.sample(10, random_state=42).reset_index(drop=True),
                         striped=True,
                         bordered=True,
                         hover=True,

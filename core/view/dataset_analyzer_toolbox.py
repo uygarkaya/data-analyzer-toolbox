@@ -13,6 +13,7 @@ class DatasetAnalyzerToolbox:
                 "https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
             ],
             suppress_callback_exceptions=True, 
+            prevent_initial_callbacks="initial_duplicate",
             title='Dataset Analyzer Toolbox'
         )
 

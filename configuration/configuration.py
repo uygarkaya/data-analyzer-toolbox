@@ -22,7 +22,7 @@ class Configuration:
         self.sample_datasets = [
             {
                 "id": "iris-dataset",
-                "name": "01 - Iris Flowers Dataset",
+                "name": "01 - Iris Flowers Dataset - Multiclass Classification",
                 "type": "classification",
                 "format": "csv",
                 "description": "Classic Multiclass Classification Dataset (150 rows x 5 cols)",
@@ -31,7 +31,7 @@ class Configuration:
             },
             {
                 "id": "titanic-dataset",
-                "name": "02 - Titanic Passengers Dataset",
+                "name": "02 - Titanic Passengers Dataset - Binary Survival Classification",
                 "type": "classification",
                 "format": "csv",
                 "description": "Binary Survival Classification (891 rows x 12 cols)",
@@ -40,7 +40,7 @@ class Configuration:
             },
             {
                 "id": "california-housing-dataset",
-                "name": "03 - California Housing Dataset",
+                "name": "03 - California Housing Dataset - Regression",
                 "type": "regression",
                 "format": "csv",
                 "description": "Median House Price Regression",
@@ -49,7 +49,7 @@ class Configuration:
             },
             {
                 "id": "wine-dataset",
-                "name": "04 - Wine Quality Dataset",
+                "name": "04 - Wine Quality Dataset - Regression",
                 "type": "regression",
                 "format": "csv",
                 "description": "Wine quality score regression (1599 rows x 12 cols)",

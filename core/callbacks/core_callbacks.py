@@ -1,8 +1,10 @@
 from dash import callback, Output, Input
+from dash import ctx, ALL
 import pandas as pd
 import base64, io
 import dash_bootstrap_components as dbc
 
+from core.api.dataset import DatasetAPI
 from core.view.dataset_analyzer_toolbox import DatasetAnalyzerToolbox
 
 class CoreCallbacks:
@@ -11,8 +13,8 @@ class CoreCallbacks:
 
     def register_callbacks(self):
         @callback(
-            Output("stored-dataset", "data"),
-            Output("upload-alert-container", "children"),
+            Output("stored-dataset", "data", allow_duplicate=True),
+            Output("upload-alert-container", "children", allow_duplicate=True),
             Input("upload-dataset", "contents"),
             prevent_initial_call=True
         )
@@ -46,3 +48,26 @@ class CoreCallbacks:
                     color="danger"
                 )
                 return None, alert
+            
+        @callback(
+            Output("stored-dataset", "data", allow_duplicate=True),
+            Output("upload-alert-container", "children", allow_duplicate=True),
+            Input({"type": "sample-dataset-btn", "index": ALL}, "n_clicks"),
+            prevent_initial_call=True
+        )
+        def load_sample_dataset(n_clicks_list):
+            if not any(n_clicks_list):
+                return None, None
+
+            triggered_id = ctx.triggered_id
+            dataset_id = triggered_id["index"]
+
+            df, entry, error = DatasetAPI.download_dataset(dataset_id)
+
+            if error:
+                return None, dbc.Alert(f"Error: {error}", color="danger")
+
+            return df.to_dict("records"), dbc.Alert(
+                f"{entry['name']} Loaded Successfully!",
+                color="success"
+            )
