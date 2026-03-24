@@ -1,4 +1,5 @@
 from core.view.components.tabs.fetch_data import FetchData
+from core.view.components.tabs.data_overview import DataOverview
 from configuration.environment import Environment
 from typing import Dict
 
@@ -9,6 +10,7 @@ class Configuration:
         self.system_port: str = self.environment['PORT']
         self.tabs: Dict[str, str] = {
             "tab-fetch": "Fetch Datasets",
+            "tab-info": "Dataset Information",
             "tab-eda": "Exploratory Data Analysis",
             "tab-clean": "Clean Data",
             "tab-train": "Train Model",
@@ -16,13 +18,14 @@ class Configuration:
         }
 
         self.tabs_components = {
-            "tab-fetch": FetchData
+            "tab-fetch": FetchData,
+            "tab-info": DataOverview
         }
 
         self.sample_datasets = [
             {
                 "id": "iris-dataset",
-                "name": "01 - Iris Flowers Dataset - Multiclass Classification",
+                "name": "01 - Iris Flowers Dataset - [Multiclass Classification]",
                 "type": "classification",
                 "format": "csv",
                 "description": "Classic Multiclass Classification Dataset (150 rows x 5 cols)",
@@ -31,7 +34,7 @@ class Configuration:
             },
             {
                 "id": "titanic-dataset",
-                "name": "02 - Titanic Passengers Dataset - Binary Survival Classification",
+                "name": "02 - Titanic Passengers Dataset - [Binary Survival Classification]",
                 "type": "classification",
                 "format": "csv",
                 "description": "Binary Survival Classification (891 rows x 12 cols)",
@@ -40,7 +43,7 @@ class Configuration:
             },
             {
                 "id": "california-housing-dataset",
-                "name": "03 - California Housing Dataset - Regression",
+                "name": "03 - California Housing Dataset - [Regression]",
                 "type": "regression",
                 "format": "csv",
                 "description": "Median House Price Regression",
@@ -49,7 +52,7 @@ class Configuration:
             },
             {
                 "id": "wine-dataset",
-                "name": "04 - Wine Quality Dataset - Regression",
+                "name": "04 - Wine Quality Dataset - [Regression]",
                 "type": "regression",
                 "format": "csv",
                 "description": "Wine quality score regression (1599 rows x 12 cols)",
