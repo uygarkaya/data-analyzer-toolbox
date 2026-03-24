@@ -1,5 +1,6 @@
 from core.view.components.tabs.fetch_data import FetchData
 from core.view.components.tabs.data_overview import DataOverview
+from core.view.components.tabs.exploratory_data_analysis import ExploratoryDataAnalysis
 from configuration.environment import Environment
 from typing import Dict
 
@@ -19,7 +20,8 @@ class Configuration:
 
         self.tabs_components = {
             "tab-fetch": FetchData,
-            "tab-info": DataOverview
+            "tab-info": DataOverview,
+            "tab-eda": ExploratoryDataAnalysis,
         }
 
         self.sample_datasets = [

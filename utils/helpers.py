@@ -1,4 +1,4 @@
-from dash import html
+from dash import html, dcc
 import dash_bootstrap_components as dbc
 
 class HelperFunc:
@@ -10,7 +10,7 @@ class HelperFunc:
             dbc.Card(
                 dbc.CardBody([
                     html.Div([
-                        html.Span(label, style={"fontSize": "12px", "color": "#6c757d", "fontWeight": "600", "textTransform": "uppercase", "letterSpacing": "0.5px"}),
+                        html.Span(label, style={"fontSize": "12px", "color": "#6C757D", "fontWeight": "600", "textTransform": "uppercase", "letterSpacing": "0.5px"}),
                     ], style={"display": "flex", "alignItems": "center", "marginBottom": "6px"}),
                     html.H4(
                         id=card_id,
@@ -21,4 +21,21 @@ class HelperFunc:
                 style={"borderLeft": f"4px solid {color}", "borderRadius": "8px", "boxShadow": "0 1px 6px rgba(0,0,0,0.07)"}
             ),
             xs=12, sm=6, md=3, style={"marginBottom": "16px"}
+        )
+    
+    def eda_chart_card(self, title: str, graph_id: str) -> dbc.Card:
+        return dbc.Card(
+            dbc.CardBody([
+                html.H6(title, style={"fontWeight": "600", "marginBottom": "12px", "color": "#343A40"}),
+                dcc.Loading(
+                    dcc.Graph(
+                        id=graph_id,
+                        config={"displayModeBar": False},
+                        style={"height": "320px"}
+                    ),
+                    type="circle",
+                    color="#0D6EFD"
+                )
+            ]),
+            style={"borderRadius": "10px", "boxShadow": "0 1px 6px rgba(0,0,0,0.07)", "marginBottom": "20px"}
         )
