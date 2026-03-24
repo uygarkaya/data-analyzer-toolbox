@@ -103,7 +103,44 @@ class DataOverview:
                                 "fontWeight": "600"
                             }
                         ]
-                    )
+                    ),
+
+                    html.H5(
+                        "Numeric Summary Statistics", 
+                        style={
+                            "fontWeight": "600", 
+                            "marginBottom": "12px", 
+                            "marginTop": "28px"
+                        }
+                    ),
+                    html.Div(
+                        id="ov-numeric-summary-wrapper",
+                        children=dash_table.DataTable(
+                            id="ov-numeric-table",
+                            columns=[],
+                            data=[],
+                            page_size=10,
+                            style_table={"overflowX": "auto", "borderRadius": "8px", "border": "1px solid #dee2e6"},
+                            style_header={
+                                "backgroundColor": "#F8F9FA",
+                                "fontWeight": "700",
+                                "fontSize": "12px",
+                                "textTransform": "uppercase",
+                                "letterSpacing": "0.4px",
+                                "color": "#495057",
+                                "borderBottom": "2px solid #DEE2E6"
+                            },
+                            style_cell={
+                                "fontSize": "13px",
+                                "padding": "10px 14px",
+                                "fontFamily": "sans-serif",
+                                "textAlign": "left"
+                            },
+                            style_data_conditional=[
+                                {"if": {"row_index": "odd"}, "backgroundColor": "#F8F9FA"}
+                            ]
+                        )
+                    ),
                 ]
             )
         ])

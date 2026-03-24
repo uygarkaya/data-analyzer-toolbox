@@ -120,6 +120,8 @@ class CoreCallbacks:
             Output("ov-datetime",          "children"),
             Output("ov-memory",            "children"),
             Output("ov-column-table",      "data"),
+            Output("ov-numeric-table",     "columns"),
+            Output("ov-numeric-table",     "data"),
             Input("stored-dataset",        "data"),
             prevent_initial_call=True
         )
@@ -128,7 +130,7 @@ class CoreCallbacks:
             VISIBLE = {"display": "block"}
 
             if not records:
-                return VISIBLE, HIDDEN, "—", "—", "—", "—", "—", "—", "—", "—", []
+                return VISIBLE, HIDDEN, "—", "—", "—", "—", "—", "—", "—", "—", [], [], []
 
             df = pd.DataFrame(records)
 
@@ -156,11 +158,20 @@ class CoreCallbacks:
                     "sample":     str(df[col].dropna().iloc[0]) if not df[col].dropna().empty else "N/A",
                 })
 
+            num_df = df.select_dtypes(include="number")
+            if not num_df.empty:
+                desc = num_df.describe().round(4).reset_index().rename(columns={"index": "Statistic"})
+                num_columns = [{"name": c, "id": c} for c in desc.columns]
+                num_data    = desc.to_dict("records")
+            else:
+                num_columns, num_data = [], []
+
             return (
                 HIDDEN, VISIBLE,
                 f"{total_rows:,}", f"{total_cols:,}",
                 f"{total_missing:,}", f"{duplicates:,}",
                 str(numeric_cols), str(cat_cols),
                 str(dt_cols), memory_str,
-                col_rows
+                col_rows,
+                num_columns, num_data
             )
