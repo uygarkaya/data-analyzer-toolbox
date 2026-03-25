@@ -64,7 +64,11 @@ class ExploratoryDataAnalysis:
                     dbc.Row([
                         dbc.Col(self.helper.eda_chart_card("Distribution — Histogram", "eda-histogram"), md=6),
                         dbc.Col(self.helper.eda_chart_card("Correlation Heatmap", "eda-heatmap"), md=6),
-                    ])
+                    ]),
+                    dbc.Row([ 
+                        dbc.Col(self.helper.eda_chart_card("Box Plot — Outlier Detection", "eda-boxplot"), md=6), 
+                        dbc.Col(self.helper.eda_chart_card("Top Categorical Value Counts", "eda-barchart"), md=6), 
+                    ]),
                 ]
             )
         ])

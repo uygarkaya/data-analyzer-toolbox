@@ -272,3 +272,56 @@ class CoreCallbacks:
                 font=dict(family="sans-serif")
             )
             return fig
+
+        @self.view.app.callback( 
+            Output("eda-boxplot",    "figure"), 
+            Input("stored-dataset",  "data"), 
+            Input("eda-numeric-col", "value"), 
+            prevent_initial_call=True 
+        )
+        def update_boxplot(records, col): 
+            if not records or not col: 
+                return go.Figure() 
+
+            df  = pd.DataFrame(records) 
+            fig = px.box(
+                df, 
+                y=col, 
+                color_discrete_sequence=["#0D6EFD"], 
+                template="plotly_white", 
+                points="outliers"
+            ) 
+            fig.update_layout(
+                margin=dict(l=20, r=20, t=20, b=20),
+                font=dict(family="sans-serif")
+            ) 
+            return fig 
+
+        @self.view.app.callback( 
+            Output("eda-barchart",   "figure"), 
+            Input("stored-dataset",  "data"), 
+            Input("eda-cat-col",     "value"), 
+            prevent_initial_call=True 
+        ) 
+        def update_barchart(records, col): 
+            if not records or not col: 
+                return go.Figure() 
+
+            df = pd.DataFrame(records) 
+            counts = df[col].value_counts().nlargest(20).reset_index() 
+            counts.columns = [col, "count"] 
+            fig = px.bar(
+                counts, 
+                x=col, 
+                y="count", 
+                color_discrete_sequence=["#0D6EFD"], 
+                template="plotly_white"
+            ) 
+            fig.update_layout(
+                margin=dict(l=20, r=20, t=20, b=20),
+                xaxis_title=col,
+                yaxis_title="Count",
+                xaxis_tickangle=-35,
+                font=dict(family="sans-serif")
+            ) 
+            return fig
