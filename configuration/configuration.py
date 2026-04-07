@@ -1,5 +1,6 @@
 from core.view.components.tabs.fetch_data import FetchData
 from core.view.components.tabs.data_overview import DataOverview
+from core.view.components.tabs.data_processing import DataProcessing
 from core.view.components.tabs.exploratory_data_analysis import ExploratoryDataAnalysis
 from configuration.environment import Environment
 from typing import Dict
@@ -13,15 +14,18 @@ class Configuration:
             "tab-fetch": "Fetch Datasets",
             "tab-info": "Dataset Information",
             "tab-eda": "Exploratory Data Analysis",
-            "tab-clean": "Clean Data",
+            "tab-process": "Data Processing",
+            "tab-feature": "Feature Engineering",
             "tab-train": "Train Model",
             "tab-evaluate": "Evaluate",
+            "tab-download": "Download Dataset",
         }
 
         self.tabs_components = {
             "tab-fetch": FetchData,
             "tab-info": DataOverview,
             "tab-eda": ExploratoryDataAnalysis,
+            "tab-process": DataProcessing,
         }
 
         self.sample_datasets = [

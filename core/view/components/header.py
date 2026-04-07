@@ -28,13 +28,11 @@ class Header:
                             style={
                                 "fontSize": "1.3rem",
                                 "color": "#ffffff",
-                                "padding": "0.3em",
                                 "height": "60px",
                                 "display": "flex",
                                 "alignItems": "center",
                                 "justifyContent": "start",
                                 "fontFamily": "sans-serif",
-                                "padding-left": "10px",
                             }
                         ),
                     ),
@@ -47,7 +45,6 @@ class Header:
                                 "display": "flex", 
                                 "alignItems": "center", 
                                 "justifyContent": "end",
-                                "padding-top": "1em",
                                 "fontFamily": "sans-serif",
                             }
                         )

@@ -125,16 +125,6 @@ class ViewCallbacks:
 
             return html.Div(
             [
-                # Dataset Info Cards
-                html.Div(
-                    [
-                        dbc.Badge(f"Rows: {df.shape[0]}", color="primary", className="me-2", pill=True),
-                        dbc.Badge(f"Columns: {df.shape[1]}", color="info", pill=True),
-                    ],
-                    style={"marginBottom": "10px"}
-                ),
-
-                html.H6("Preview (Sample 10 Rows):", style={"marginTop": "10px", "fontWeight": "600"}),
                 html.Div(
                     dbc.Table.from_dataframe(
                         df.sample(10, random_state=42).reset_index(drop=True),
@@ -149,7 +139,6 @@ class ViewCallbacks:
                         "overflowY": "auto",
                         "border": "1px solid #dee2e6",
                         "borderRadius": "6px",
-                        "padding": "5px",
                         "boxShadow": "inset 0 1px 3px rgba(0,0,0,0.1)",
                         "backgroundColor": "#fff",
                     }
@@ -159,7 +148,6 @@ class ViewCallbacks:
                 "display": "flex",
                 "flexDirection": "column",
                 "gap": "8px",
-                "padding": "10px",
                 "backgroundColor": "#f8f9fa",
                 "borderRadius": "8px",
                 "boxShadow": "0 2px 8px rgba(0,0,0,0.05)"

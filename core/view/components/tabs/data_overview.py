@@ -87,7 +87,6 @@ class DataOverview:
                         },
                         style_cell={
                             "fontSize": "13px",
-                            "padding": "10px 14px",
                             "fontFamily": "sans-serif",
                             "textAlign": "left",
                             "whiteSpace": "normal",
@@ -132,7 +131,6 @@ class DataOverview:
                             },
                             style_cell={
                                 "fontSize": "13px",
-                                "padding": "10px 14px",
                                 "fontFamily": "sans-serif",
                                 "textAlign": "left"
                             },

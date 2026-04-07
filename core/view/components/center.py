@@ -44,12 +44,14 @@ class Center:
                     style={
                         "display": "flex",
                         "flex": 1,
-                        "alignItems": "flex-start",
-                        "padding": "20px 24px",
+                        "minHeight": 0,
+                        "flexDirection": "column",
+                        "alignItems": "stretch",
+                        "padding": "20px 22px",
                         "backgroundColor": LIGHT["surface"],
                         "border": f"1px solid {LIGHT['border']}",
-                        "overflowY": "auto",
-                        "maxHeight": "calc(100vh - 170px)"
+                        "width": "100%",
+                        "overflowY": "auto", 
                     },
                 )
             ],
@@ -78,10 +80,11 @@ class Center:
                         "backgroundColor": LIGHT["bg"],
                         "borderRadius": "14px",
                         "border": f"1px solid {LIGHT['border']}",
-                        "overflow": "hidden",
+                        "overflow": "auto",
                         "display": "flex",
                         "flexDirection": "column",
-                        "flex": 1
+                        "flex": 1,
+                        "minHeight": 0,
                     },
                 )
             ],

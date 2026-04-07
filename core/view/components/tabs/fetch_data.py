@@ -34,7 +34,7 @@ class FetchData:
                                         label=label,
                                         value=value,
                                         style={
-                                            "padding": "6px 14px",
+                                            "padding": "6px 12px",
                                             "fontSize": "0.80rem",
                                             "fontWeight": "700",
                                             "letterSpacing": "0.05em",
@@ -43,7 +43,7 @@ class FetchData:
                                             "backgroundColor": "transparent"
                                         },
                                         selected_style={
-                                            "padding": "6px 14px",
+                                            "padding": "6px 12px",
                                             "fontSize": "0.80rem",
                                             "fontWeight": "700",
                                             "letterSpacing": "0.05em",
@@ -96,7 +96,6 @@ class FetchData:
                                 style={
                                     "color": "#6C757D",
                                     "textAlign": "center",
-                                    "padding": "30px"
                                 }
                             )
                         )

@@ -18,7 +18,6 @@ class DatasetAnalyzerToolbox:
         )
 
         self.app.layout = self.serve_app_layout()
-        self.alert_id = "popup-notification"
     
     def serve_app_layout(self):
         return html.Div(
@@ -45,20 +44,12 @@ class DatasetAnalyzerToolbox:
                     style={
                         'flex': 1,
                         'minHeight': 0,
-                        'overflowY': 'auto',
                         'marginBottom': '3em',
                         'display': 'flex',
                         'height': '100%',
+                        'width': '100%',
                     },
                 ),
                 Footer().footer(),
             ]
-        )
-    
-    def generate_alert(self, message, color="success", duration=4000) -> dbc.Alert:
-        return dbc.Alert(
-            id=self.alert_id,
-            children=message,
-            color=color,
-            duration=duration,
         )
