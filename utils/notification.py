@@ -5,7 +5,6 @@ class Notification:
         self.alert_id = "popup-notification"
 
     def generate_alert(self, message, color="success", duration=4000) -> dbc.Alert:
-        print(f"Generating alert: {message} (color={color}, duration={duration}ms)")
         return dbc.Alert(
             id=self.alert_id,
             children=message,
