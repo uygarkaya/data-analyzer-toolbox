@@ -39,3 +39,27 @@ class HelperFunc:
             ]),
             style={"borderRadius": "10px", "boxShadow": "0 1px 6px rgba(0,0,0,0.07)", "marginBottom": "20px"}
         )
+
+    def data_processing_section_card(self, title: str, body: list) -> dbc.Card:
+        return dbc.Card(
+            [
+                dbc.CardHeader(
+                    html.Div(
+                        [
+                            html.Div(
+                                [
+                                    html.Span(title, style={"fontWeight": "700", "fontSize": "14px", "display": "block"}),
+                                ]
+                            ),
+                        ],
+                        style={"display": "flex", "alignItems": "center"},
+                    )
+                ),
+                dbc.CardBody(body),
+            ],
+            style={
+                "borderRadius": "10px",
+                "boxShadow": "0 1px 6px rgba(0,0,0,0.07)",
+                "height": "100%",
+            },
+        )
