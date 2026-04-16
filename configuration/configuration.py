@@ -1,6 +1,7 @@
 from core.view.components.tabs.fetch_data import FetchData
 from core.view.components.tabs.data_overview import DataOverview
 from core.view.components.tabs.data_processing import DataProcessing
+from core.view.components.tabs.feature_engineering import FeatureEngineering
 from core.view.components.tabs.exploratory_data_analysis import ExploratoryDataAnalysis
 from configuration.environment import Environment
 from typing import Dict
@@ -26,6 +27,7 @@ class Configuration:
             "tab-info": DataOverview,
             "tab-eda": ExploratoryDataAnalysis,
             "tab-process": DataProcessing,
+            "tab-feature": FeatureEngineering,
         }
 
         self.sample_datasets = [
