@@ -1,10 +1,11 @@
 from dash import html, dcc, dash_table
 import dash_bootstrap_components as dbc
 from utils.helpers import HelperFunc
+from utils.constants import TABLE_STYLE
 
 class FeatureEngineering:
     def __init__(self):
-        self.helper = HelperFunc()
+        self.helper_func = HelperFunc()
 
     def content(self) -> html.Div:
         return html.Div([
@@ -19,24 +20,7 @@ class FeatureEngineering:
                 style={"color": "#6C757D", "marginBottom": "24px"}
             ),
 
-            html.Div(
-                id="fe-no-data-msg",
-                children=dbc.Alert(
-                    [
-                        html.I(className="bi bi-bar-chart-line me-2"),
-                        "No Dataset Loaded Yet. Upload or Select a Sample Dataset to Begin"
-                    ],
-                    color="danger",
-                    style={
-                        "borderRadius": "8px",
-                        "display": "flex",
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                        "height": "80px",
-                        "width": "100%"
-                    }
-                )
-            ),
+            self.helper_func.no_data_alert("fe-no-data-msg", icon_class="bi bi-bar-chart-line"),
 
             html.Div(
                 id="fe-content",
@@ -44,9 +28,10 @@ class FeatureEngineering:
                 children=[
                     dbc.Row([
                         dbc.Col(
-                            self.helper.data_processing_section_card(
-                                "Select Target Column",
-                                [
+                            self.helper_func.build_card(
+                                variant="section",
+                                title="Select Target Column",
+                                body=[
                                     html.Label("Target Column", style={"fontWeight": "600", "fontSize": "13px"}),
                                     dcc.Dropdown(
                                         id="fe-target-col",
@@ -75,9 +60,10 @@ class FeatureEngineering:
                         ),
 
                         dbc.Col(
-                            self.helper.data_processing_section_card(
-                                "Encode Categorical Features",
-                                [
+                            self.helper_func.build_card(
+                                variant="section",
+                                title="Encode Categorical Features",
+                                body=[
                                     html.Label("Column", style={"fontWeight": "600", "fontSize": "13px"}),
                                     dcc.Dropdown(
                                         id="fe-encode-col",
@@ -107,9 +93,10 @@ class FeatureEngineering:
                         ),
 
                         dbc.Col(
-                            self.helper.data_processing_section_card(
-                                "Scale Numeric Features",
-                                [
+                            self.helper_func.build_card(
+                                variant="section",
+                                title="Scale Numeric Features",
+                                body=[
                                     html.Label("Columns", style={"fontWeight": "600", "fontSize": "13px"}),
                                     dcc.Dropdown(
                                         id="fe-scale-cols",
@@ -211,32 +198,10 @@ class FeatureEngineering:
                             dash_table.DataTable(
                                 id="fe-preview-table",
                                 page_size=10,
-                                style_table={
-                                    "overflowX": "auto",
-                                    "borderRadius": "8px",
-                                    "border": "1px solid #DEE2E6",
-                                },
-                                style_header={
-                                    "backgroundColor": "#F8F9FA",
-                                    "fontWeight": "700",
-                                    "fontSize": "12px",
-                                    "textTransform": "uppercase",
-                                    "letterSpacing": "0.4px",
-                                    "color": "#495057",
-                                    "borderBottom": "2px solid #DEE2E6",
-                                },
-                                style_cell={
-                                    "fontSize": "13px",
-                                    "fontFamily": "inherit",
-                                    "textAlign": "left",
-                                    "whiteSpace": "normal",
-                                    "maxWidth": "200px",
-                                    "overflow": "hidden",
-                                    "textOverflow": "ellipsis",
-                                },
-                                style_data_conditional=[
-                                    {"if": {"row_index": "odd"}, "backgroundColor": "#F8F9FA"}
-                                ],
+                                style_table=TABLE_STYLE["table"],
+                                style_header=TABLE_STYLE["header"],
+                                style_cell={**TABLE_STYLE["cell"], "fontFamily": "inherit"},
+                                style_data_conditional=TABLE_STYLE["striped"],
                             )
                         ),
                     ], style={

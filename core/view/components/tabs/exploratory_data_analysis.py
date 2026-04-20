@@ -4,12 +4,12 @@ from utils.helpers import HelperFunc
 
 class ExploratoryDataAnalysis:
     def __init__(self) -> None:
-        self.helper = HelperFunc()
+        self.helper_func = HelperFunc()
 
     def content(self) -> html.Div:
         return html.Div([
             html.H4(
-                "Exploratory Data Analysis", 
+                "Exploratory Data Analysis",
                 style={"fontWeight": "700"}
             ),
             html.H6(
@@ -17,24 +17,7 @@ class ExploratoryDataAnalysis:
                 style={"color": "#6C757D", "marginBottom": "24px"}
             ),
 
-            html.Div(
-                id="eda-no-data-msg",
-                children=dbc.Alert(
-                    [
-                        html.I(className="bi bi-bar-chart-line me-2"),
-                        "No Dataset Loaded Yet. Upload or Select a Sample Dataset to Begin"
-                    ],
-                    color="danger",
-                    style={
-                        "borderRadius": "8px",
-                        "display": "flex",
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                        "height": "80px",
-                        "width": "100%"
-                    }
-                )
-            ),
+            self.helper_func.no_data_alert("eda-no-data-msg", icon_class="bi bi-bar-chart-line"),
 
             html.Div(
                 id="eda-content",
@@ -62,12 +45,12 @@ class ExploratoryDataAnalysis:
                     ], className="g-3", style={"marginBottom": "24px"}),
 
                     dbc.Row([
-                        dbc.Col(self.helper.eda_chart_card("Distribution — Histogram", "eda-histogram"), md=6),
-                        dbc.Col(self.helper.eda_chart_card("Correlation Heatmap", "eda-heatmap"), md=6),
+                        dbc.Col(self.helper_func.build_card(variant="chart", title="Distribution — Histogram", component_id="eda-histogram"), md=6),
+                        dbc.Col(self.helper_func.build_card(variant="chart", title="Correlation Heatmap", component_id="eda-heatmap"), md=6),
                     ]),
                     dbc.Row([ 
-                        dbc.Col(self.helper.eda_chart_card("Box Plot — Outlier Detection", "eda-boxplot"), md=6), 
-                        dbc.Col(self.helper.eda_chart_card("Top Categorical Value Counts", "eda-barchart"), md=6), 
+                        dbc.Col(self.helper_func.build_card(variant="chart", title="Box Plot — Outlier Detection", component_id="eda-boxplot"), md=6), 
+                        dbc.Col(self.helper_func.build_card(variant="chart", title="Top Categorical Value Counts", component_id="eda-barchart"), md=6), 
                     ]),
                 ]
             )

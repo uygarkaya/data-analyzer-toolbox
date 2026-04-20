@@ -6,11 +6,14 @@ from core.view.components.tabs.exploratory_data_analysis import ExploratoryDataA
 from configuration.environment import Environment
 from typing import Dict
 
+from utils.helpers import HelperFunc
+
 class Configuration:
     def __init__(self):
         self.environment: Environment = Environment.get_instance()
         self.system_host: str = self.environment['HOST']
         self.system_port: str = self.environment['PORT']
+        self.dataset_url: str = self.environment['DATASET_URL']
         self.tabs: Dict[str, str] = {
             "tab-fetch": "Fetch Datasets",
             "tab-info": "Dataset Information",
@@ -19,10 +22,11 @@ class Configuration:
             "tab-feature": "Feature Engineering",
             "tab-train": "Train Model",
             "tab-evaluate": "Evaluate",
+            "tab-explainability": "Explainability",
             "tab-download": "Download Dataset",
         }
 
-        self.tabs_components = {
+        self.tabs_components: Dict[str, type] = {
             "tab-fetch": FetchData,
             "tab-info": DataOverview,
             "tab-eda": ExploratoryDataAnalysis,
@@ -30,41 +34,5 @@ class Configuration:
             "tab-feature": FeatureEngineering,
         }
 
-        self.sample_datasets = [
-            {
-                "id": "iris-dataset",
-                "name": "01 - Iris Flowers Dataset - [Multiclass Classification]",
-                "type": "classification",
-                "format": "csv",
-                "description": "Classic Multiclass Classification Dataset (150 rows x 5 cols)",
-                "url": "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv",
-                "target_col": "species",
-            },
-            {
-                "id": "titanic-dataset",
-                "name": "02 - Titanic Passengers Dataset - [Binary Survival Classification]",
-                "type": "classification",
-                "format": "csv",
-                "description": "Binary Survival Classification (891 rows x 12 cols)",
-                "url": "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv",
-                "target_col": "Survived",
-            },
-            {
-                "id": "california-housing-dataset",
-                "name": "03 - California Housing Dataset - [Regression]",
-                "type": "regression",
-                "format": "csv",
-                "description": "Median House Price Regression",
-                "url": "https://raw.githubusercontent.com/ageron/handson-ml2/master/datasets/housing/housing.csv",
-                "target_col": "median_house_value",
-            },
-            {
-                "id": "wine-dataset",
-                "name": "04 - Wine Quality Dataset - [Regression]",
-                "type": "regression",
-                "format": "csv",
-                "description": "Wine quality score regression (1599 rows x 12 cols)",
-                "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
-                "target_col": "quality",
-            },
-        ]
+        self.helper_func: HelperFunc = HelperFunc()
+        self.sample_datasets: list = self.helper_func.load_json(self.dataset_url)

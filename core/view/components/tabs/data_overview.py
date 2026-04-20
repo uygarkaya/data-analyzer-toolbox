@@ -1,15 +1,16 @@
 from dash import html, dash_table
 from utils.helpers import HelperFunc
+from utils.constants import TABLE_STYLE
 import dash_bootstrap_components as dbc
 
 class DataOverview:
     def __init__(self) -> None:
-        self.helper = HelperFunc()
+        self.helper_func = HelperFunc()
 
     def content(self) -> html.Div:
         return html.Div([
             html.H4(
-                "Dataset Information & Summary", 
+                "Dataset Information & Summary",
                 style={"fontWeight": "700"}
             ),
             html.H6(
@@ -17,44 +18,27 @@ class DataOverview:
                 style={"color": "#6c757d", "marginBottom": "24px"}
             ),
 
-            html.Div(
-                id="overview-no-data-msg",
-                children=dbc.Alert(
-                    [
-                        html.I(className="bi bi-database-x me-2"),
-                        "No Dataset Loaded Yet. Upload or Select a Sample Dataset to Begin"
-                    ],
-                    color="danger",
-                    style={
-                        "borderRadius": "8px",
-                        "display": "flex",
-                        "alignItems": "center",
-                        "justifyContent": "center",
-                        "height": "80px",
-                        "width": "100%"
-                    }
-                ),
-            ),
+            self.helper_func.no_data_alert("overview-no-data-msg"),
 
             html.Div(
                 id="overview-content",
                 style={"display": "none"},
                 children=[
                     dbc.Row([
-                        self.helper.data_overview_stat_card("ov-rows", "Total Rows", "#0D6EFD"),
-                        self.helper.data_overview_stat_card("ov-cols", "Total Columns", "#6610F2"),
-                        self.helper.data_overview_stat_card("ov-missing", "Missing Values", "#FD7E14"),
-                        self.helper.data_overview_stat_card("ov-duplicates", "Duplicate Rows", "#DC3545"),
-                        self.helper.data_overview_stat_card("ov-numeric", "Numeric Columns", "#198754"),
-                        self.helper.data_overview_stat_card("ov-categorical", "Categorical Cols", "#0DCAF0"),
-                        self.helper.data_overview_stat_card("ov-datetime", "Datetime Columns", "#6F42C1"),
-                        self.helper.data_overview_stat_card("ov-memory", "Memory Usage", "#20C997"),
+                        self.helper_func.build_card("stat", "Total Rows", "ov-rows", "#0D6EFD"),
+                        self.helper_func.build_card("stat", "Total Columns", "ov-cols", "#6610F2"),
+                        self.helper_func.build_card("stat", "Missing Values", "ov-missing", "#FD7E14"),
+                        self.helper_func.build_card("stat", "Duplicate Rows", "ov-duplicates", "#DC3545"),
+                        self.helper_func.build_card("stat", "Numeric Columns", "ov-numeric", "#198754"),
+                        self.helper_func.build_card("stat", "Categorical Cols", "ov-categorical", "#0DCAF0"),
+                        self.helper_func.build_card("stat", "Datetime Columns", "ov-datetime", "#6F42C1"),
+                        self.helper_func.build_card("stat", "Memory Usage", "ov-memory", "#20C997"),
                     ], className="g-3", style={"marginBottom": "28px"}),
 
                     html.H5(
-                        "Column Details", 
+                        "Column Details",
                         style={
-                            "fontWeight": "600", 
+                            "fontWeight": "600",
                             "marginBottom": "12px"
                         }
                     ),
@@ -71,31 +55,10 @@ class DataOverview:
                         ],
                         data=[],
                         page_size=12,
-                        style_table={
-                            "overflowX": "auto", 
-                            "borderRadius": "8px", 
-                            "border": "1px solid #DEE2E6"
-                        },
-                        style_header={
-                            "backgroundColor": "#F8F9FA",
-                            "fontWeight": "700",
-                            "fontSize": "12px",
-                            "textTransform": "uppercase",
-                            "letterSpacing": "0.4px",
-                            "color": "#495057",
-                            "borderBottom": "2px solid #DEE2E6"
-                        },
-                        style_cell={
-                            "fontSize": "13px",
-                            "fontFamily": "sans-serif",
-                            "textAlign": "left",
-                            "whiteSpace": "normal",
-                            "maxWidth": "200px",
-                            "overflow": "hidden",
-                            "textOverflow": "ellipsis"
-                        },
-                        style_data_conditional=[
-                            {"if": {"row_index": "odd"}, "backgroundColor": "#F8F9FA"},
+                        style_table=TABLE_STYLE["table"],
+                        style_header=TABLE_STYLE["header"],
+                        style_cell=TABLE_STYLE["cell"],
+                        style_data_conditional=TABLE_STYLE["striped"] + [
                             {
                                 "if": {"filter_query": "{null_count} > 0", "column_id": "null_count"},
                                 "color": "#DC3545",
@@ -105,10 +68,10 @@ class DataOverview:
                     ),
 
                     html.H5(
-                        "Numeric Summary Statistics", 
+                        "Numeric Summary Statistics",
                         style={
-                            "fontWeight": "600", 
-                            "marginBottom": "12px", 
+                            "fontWeight": "600",
+                            "marginBottom": "12px",
                             "marginTop": "28px"
                         }
                     ),
@@ -119,24 +82,14 @@ class DataOverview:
                             columns=[],
                             data=[],
                             page_size=10,
-                            style_table={"overflowX": "auto", "borderRadius": "8px", "border": "1px solid #dee2e6"},
-                            style_header={
-                                "backgroundColor": "#F8F9FA",
-                                "fontWeight": "700",
-                                "fontSize": "12px",
-                                "textTransform": "uppercase",
-                                "letterSpacing": "0.4px",
-                                "color": "#495057",
-                                "borderBottom": "2px solid #DEE2E6"
-                            },
+                            style_table=TABLE_STYLE["table"],
+                            style_header=TABLE_STYLE["header"],
                             style_cell={
                                 "fontSize": "13px",
                                 "fontFamily": "sans-serif",
                                 "textAlign": "left"
                             },
-                            style_data_conditional=[
-                                {"if": {"row_index": "odd"}, "backgroundColor": "#F8F9FA"}
-                            ]
+                            style_data_conditional=TABLE_STYLE["striped"],
                         )
                     ),
                 ]
