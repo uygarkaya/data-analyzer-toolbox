@@ -1,16 +1,17 @@
 from dash import html, dcc, dash_table
 import dash_bootstrap_components as dbc
 from utils.helpers import HelperFunc
+from utils.constants import TABLE_STYLE
 
 class DataProcessing:
     def __init__(self) -> None:
-        self.helper = HelperFunc()
+        self.helper_func = HelperFunc()
 
     def content(self) -> html.Div:
         return html.Div(
             [
                 html.H4(
-                    "Data Cleaning & Processing", 
+                    "Data Cleaning & Processing",
                     style={"fontWeight": "700"}
                 ),
                 html.H6(
@@ -18,24 +19,7 @@ class DataProcessing:
                     style={"color": "#6c757d", "marginBottom": "24px"},
                 ),
 
-                html.Div(
-                    id="proc-no-data-msg",
-                    children=dbc.Alert(
-                        [
-                            html.I(className="bi bi-database-x me-2"),
-                            "No Dataset Loaded Yet. Upload or Select a Sample Dataset to Begin"
-                        ],
-                        color="danger",
-                        style={
-                            "borderRadius": "8px",
-                            "display": "flex",
-                            "alignItems": "center",
-                            "justifyContent": "center",
-                            "height": "80px",
-                            "width": "100%"
-                        }
-                    ),
-                ),
+                self.helper_func.no_data_alert("proc-no-data-msg"),
 
                 html.Div(
                     id="proc-content",
@@ -44,9 +28,10 @@ class DataProcessing:
                         dbc.Row(
                             [
                                 dbc.Col(
-                                    self.helper.data_processing_section_card(
-                                        "Handle Missing Values",
-                                        [
+                                    self.helper_func.build_card(
+                                        variant="section",
+                                        title="Handle Missing Values",
+                                        body=[
                                             html.Label("Column", style={"fontWeight": "600", "fontSize": "13px"}),
                                             dcc.Dropdown(
                                                 id="proc-null-col",
@@ -83,9 +68,10 @@ class DataProcessing:
                                 ),
 
                                 dbc.Col(
-                                    self.helper.data_processing_section_card(
-                                        "Remove Duplicate Rows",
-                                        [
+                                    self.helper_func.build_card(
+                                        variant="section",
+                                        title="Remove Duplicate Rows",
+                                        body=[
                                             html.Label("Subset Columns (optional)", style={"fontWeight": "600", "fontSize": "13px"}),
                                             dcc.Dropdown(
                                                 id="proc-dup-cols",
@@ -112,9 +98,10 @@ class DataProcessing:
                                 ),
 
                                 dbc.Col(
-                                    self.helper.data_processing_section_card(
-                                        "Rename / Drop Columns",
-                                        [
+                                    self.helper_func.build_card(
+                                        variant="section",
+                                        title="Rename / Drop Columns",
+                                        body=[
                                             html.Label("Column", style={"fontWeight": "600", "fontSize": "13px"}),
                                             dcc.Dropdown(
                                                 id="proc-col-select",
@@ -127,7 +114,7 @@ class DataProcessing:
                                                 id="proc-col-newname",
                                                 placeholder="Enter New Name",
                                                 type="text",
-                                                style={"fontSize": "13px", "marginBottom": "82px"},
+                                                style={"fontSize": "13px", "marginBottom": "84px"},
                                             ),
                                             dbc.Row(
                                                 [
@@ -164,32 +151,10 @@ class DataProcessing:
                                     dash_table.DataTable(
                                         id="proc-preview-table",
                                         page_size=10,
-                                        style_table={
-                                            "overflowX": "auto", 
-                                            "borderRadius": "8px", 
-                                            "border": "1px solid #DEE2E6"
-                                        },
-                                        style_header={
-                                            "backgroundColor": "#F8F9FA",
-                                            "fontWeight": "700",
-                                            "fontSize": "12px",
-                                            "textTransform": "uppercase",
-                                            "letterSpacing": "0.4px",
-                                            "color": "#495057",
-                                            "borderBottom": "2px solid #DEE2E6",
-                                        },
-                                        style_cell={
-                                            "fontSize": "13px",
-                                            "fontFamily": "inherit",
-                                            "textAlign": "left",
-                                            "whiteSpace": "normal",
-                                            "maxWidth": "200px",
-                                            "overflow": "hidden",
-                                            "textOverflow": "ellipsis",
-                                        },
-                                        style_data_conditional=[
-                                            {"if": {"row_index": "odd"}, "backgroundColor": "#F8F9FA"}
-                                        ],
+                                        style_table=TABLE_STYLE["table"],
+                                        style_header=TABLE_STYLE["header"],
+                                        style_cell={**TABLE_STYLE["cell"], "fontFamily": "inherit"},
+                                        style_data_conditional=TABLE_STYLE["striped"],
                                     )
                                 ),
                             ],

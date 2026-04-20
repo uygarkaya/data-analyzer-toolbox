@@ -15,3 +15,38 @@ TAB_ACCENT = {
     3: {"color": "#b85c1a", "bg": "#fdf0e8"},
     4: {"color": "#9a6c10", "bg": "#fdf5e0"},
 }
+
+TABLE_STYLE = {
+    "table": {
+        "overflowX": "auto",
+        "borderRadius": "8px",
+        "border": "1px solid #DEE2E6",
+    },
+    "header": {
+        "backgroundColor": "#F8F9FA",
+        "fontWeight": "700",
+        "fontSize": "12px",
+        "textTransform": "uppercase",
+        "letterSpacing": "0.4px",
+        "color": "#495057",
+        "borderBottom": "2px solid #DEE2E6",
+    },
+    "cell": {
+        "fontSize": "13px",
+        "fontFamily": "sans-serif",
+        "textAlign": "left",
+        "whiteSpace": "normal",
+        "maxWidth": "200px",
+        "overflow": "hidden",
+        "textOverflow": "ellipsis",
+    },
+    "striped": [
+        {"if": {"row_index": "odd"}, "backgroundColor": "#F8F9FA"},
+    ],
+}
+
+CHART_LAYOUT = {
+    "margin": dict(l=20, r=20, t=20, b=20),
+    "template": "plotly_white",
+    "font": dict(family="sans-serif"),
+}

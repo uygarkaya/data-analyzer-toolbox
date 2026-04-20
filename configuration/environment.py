@@ -22,7 +22,7 @@ class Environment:
 
     def _load_required_env_variables(self):
         required_env_variables = [
-            'HOST', 'PORT'
+            'HOST', 'PORT', 'DATASET_URL'
         ]
 
         for variable in required_env_variables:
