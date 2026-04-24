@@ -3,13 +3,13 @@ import pandas as pd
 import plotly.graph_objects as go
 import plotly.express as px
 
-from core.view.dataset_analyzer_toolbox import DatasetAnalyzerToolbox
+from core.view.data_analyzer_toolbox import DataAnalyzerToolbox
 from utils.dataframe import HIDDEN, VISIBLE, dropdown_options
 from utils.constants import CHART_LAYOUT
 ACCENT_COLOR = "#0D6EFD"
 
 class EdaCallbacks:
-    def __init__(self, view: DatasetAnalyzerToolbox) -> None:
+    def __init__(self, view: DataAnalyzerToolbox) -> None:
         self.view = view
 
     def register_callbacks(self):

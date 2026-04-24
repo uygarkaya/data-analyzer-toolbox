@@ -24,7 +24,7 @@ class Header:
                     ),
                     dbc.Col(
                         html.Div(
-                            "Dataset Analyzer Toolbox",
+                            "Data Analyzer Toolbox",
                             style={
                                 "fontSize": "1.3rem",
                                 "color": "#ffffff",

@@ -4,11 +4,11 @@ import pandas as pd
 import base64, io, requests
 
 from core.api.dataset import DatasetAPI
-from core.view.dataset_analyzer_toolbox import DatasetAnalyzerToolbox
+from core.view.data_analyzer_toolbox import DataAnalyzerToolbox
 from utils.helpers import HelperFunc
 
 class DataLoadingCallbacks:
-    def __init__(self, view: DatasetAnalyzerToolbox) -> None:
+    def __init__(self, view: DataAnalyzerToolbox) -> None:
         self.view = view
         self.helper_func_func = HelperFunc()
 

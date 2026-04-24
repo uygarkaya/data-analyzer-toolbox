@@ -1,0 +1,161 @@
+{
+    "hyperparameter_fields": [
+        {
+            "id": "alpha",
+            "label": "Regularization (C / alpha)",
+            "default": 1.0,
+            "min": 0.0001,
+            "step": 0.01,
+            "kind": "float"
+        },
+        {
+            "id": "max_depth",
+            "label": "Max Depth",
+            "default": 5,
+            "min": 1,
+            "step": 1,
+            "kind": "int"
+        },
+        {
+            "id": "n_estimators",
+            "label": "Number of Estimators",
+            "default": 100,
+            "min": 10,
+            "step": 10,
+            "kind": "int"
+        },
+        {
+            "id": "n_neighbors",
+            "label": "Neighbors (K)",
+            "default": 5,
+            "min": 1,
+            "step": 1,
+            "kind": "int"
+        }
+    ],
+    "families": [
+        {
+            "value": "regression",
+            "label": "Regression (Linear)",
+            "task": "regression",
+            "algorithms": [
+                {
+                    "value": "linear_regression",
+                    "label": "Linear Regression",
+                    "class": "sklearn.linear_model.LinearRegression",
+                    "task": "regression",
+                    "params": {},
+                    "ui_fields": []
+                }
+            ]
+        },
+        {
+            "value": "classification",
+            "label": "Classification (Linear / Instance)",
+            "task": "classification",
+            "algorithms": [
+                {
+                    "value": "logistic_regression",
+                    "label": "Logistic Regression",
+                    "class": "sklearn.linear_model.LogisticRegression",
+                    "task": "classification",
+                    "params": {"max_iter": 1000, "random_state": 42},
+                    "ui_fields": [
+                        {"field": "alpha", "param": "C"}
+                    ]
+                },
+                {
+                    "value": "knn",
+                    "label": "K-Nearest Neighbors",
+                    "class": "sklearn.neighbors.KNeighborsClassifier",
+                    "task": "classification",
+                    "params": {},
+                    "ui_fields": [
+                        {"field": "n_neighbors", "param": "n_neighbors"}
+                    ]
+                },
+                {
+                    "value": "svm",
+                    "label": "Support Vector Machine",
+                    "class": "sklearn.svm.SVC",
+                    "task": "classification",
+                    "params": {"random_state": 42},
+                    "ui_fields": [
+                        {"field": "alpha", "param": "C"}
+                    ]
+                }
+            ]
+        },
+        {
+            "value": "tree",
+            "label": "Tree-Based",
+            "task": "auto",
+            "algorithms": [
+                {
+                    "value": "decision_tree_reg",
+                    "label": "Decision Tree Regressor",
+                    "class": "sklearn.tree.DecisionTreeRegressor",
+                    "task": "regression",
+                    "params": {"random_state": 42},
+                    "ui_fields": [
+                        {"field": "max_depth", "param": "max_depth"}
+                    ]
+                },
+                {
+                    "value": "random_forest_reg",
+                    "label": "Random Forest Regressor",
+                    "class": "sklearn.ensemble.RandomForestRegressor",
+                    "task": "regression",
+                    "params": {"random_state": 42, "n_jobs": -1},
+                    "ui_fields": [
+                        {"field": "n_estimators", "param": "n_estimators"},
+                        {"field": "max_depth", "param": "max_depth"}
+                    ]
+                },
+                {
+                    "value": "gradient_boosting_reg",
+                    "label": "Gradient Boosting Regressor",
+                    "class": "sklearn.ensemble.GradientBoostingRegressor",
+                    "task": "regression",
+                    "params": {"random_state": 42},
+                    "ui_fields": [
+                        {"field": "n_estimators", "param": "n_estimators"},
+                        {"field": "max_depth", "param": "max_depth"}
+                    ]
+                },
+                {
+                    "value": "decision_tree_clf",
+                    "label": "Decision Tree Classifier",
+                    "class": "sklearn.tree.DecisionTreeClassifier",
+                    "task": "classification",
+                    "params": {"random_state": 42},
+                    "ui_fields": [
+                        {"field": "max_depth", "param": "max_depth"}
+                    ]
+                },
+                {
+                    "value": "random_forest_clf",
+                    "label": "Random Forest Classifier",
+                    "class": "sklearn.ensemble.RandomForestClassifier",
+                    "task": "classification",
+                    "params": {"random_state": 42, "n_jobs": -1},
+                    "ui_fields": [
+                        {"field": "n_estimators", "param": "n_estimators"},
+                        {"field": "max_depth", "param": "max_depth"}
+                    ]
+                },
+                {
+                    "value": "gradient_boosting_clf",
+                    "label": "Gradient Boosting Classifier",
+                    "class": "sklearn.ensemble.GradientBoostingClassifier",
+                    "task": "classification",
+                    "params": {"random_state": 42},
+                    "ui_fields": [
+                        {"field": "n_estimators", "param": "n_estimators"},
+                        {"field": "max_depth", "param": "max_depth"}
+                    ]
+                }
+            ]
+        }
+    ]
+}

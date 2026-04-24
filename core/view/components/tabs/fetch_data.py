@@ -55,7 +55,7 @@ class FetchData:
                                         },
                                     )
                                     for label, value in [
-                                        ("SAMPLE DATASETS", "fetch-data-sample"),
+                                        ("DATASETS", "fetch-data-sample"),
                                         ("UPLOAD FILE", "fetch-data-upload"),
                                         ("FETCH FROM API", "fetch-data-api"),
                                     ]
@@ -83,7 +83,6 @@ class FetchData:
                         dbc.CardHeader(
                             html.Div(
                                 [
-                                    html.Span("🔍", style={"marginRight": "6px"}),
                                     html.Strong("Dataset Preview")
                                 ]
                             )

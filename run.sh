@@ -1,6 +1,6 @@
 #!/bin/bash
 
-echo "Dataset Analyzer Toolbox..."
+echo "Data Analyzer Toolbox..."
 
 # activate virtual environment
 echo "Activating Virtual Environment..."

@@ -14,6 +14,10 @@ TAB_ACCENT = {
     2: {"color": "#6d3fa8", "bg": "#f0ebfb"},
     3: {"color": "#b85c1a", "bg": "#fdf0e8"},
     4: {"color": "#9a6c10", "bg": "#fdf5e0"},
+    5: {"color": "#1a7a4a", "bg": "#e8f5ee"},
+    6: {"color": "#1d5fa8", "bg": "#e8f0fb"},
+    7: {"color": "#6d3fa8", "bg": "#f0ebfb"},
+    8: {"color": "#b85c1a", "bg": "#fdf0e8"},
 }
 
 TABLE_STYLE = {
@@ -49,4 +53,13 @@ CHART_LAYOUT = {
     "margin": dict(l=20, r=20, t=20, b=20),
     "template": "plotly_white",
     "font": dict(family="sans-serif"),
+}
+
+TYPE_STYLES = {
+    "classification": {
+        "color": "primary"
+    },
+    "regression": {
+        "color": "success"
+    },
 }

@@ -4,7 +4,7 @@
         "name": "01 - Iris Flowers Dataset - [Multiclass Classification]",
         "type": "classification",
         "format": "csv",
-        "description": "Classic Multiclass Classification Dataset (150 rows x 5 cols)",
+        "description": "Classic Multiclass Classification Dataset",
         "url": "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv",
         "target_col": "species"
     },
@@ -13,13 +13,22 @@
         "name": "02 - Titanic Passengers Dataset - [Binary Survival Classification]",
         "type": "classification",
         "format": "csv",
-        "description": "Binary Survival Classification (891 rows x 12 cols)",
+        "description": "Binary Survival Classification",
         "url": "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv",
         "target_col": "Survived"
     },
     {
+        "id": "penguins-dataset",
+        "name": "03 - Palmer Penguins Dataset - [Multiclass Classification]",
+        "type": "classification",
+        "format": "csv",
+        "description": "Penguin Species Multiclass Classification",
+        "url": "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/penguins.csv",
+        "target_col": "species"
+    },
+    {
         "id": "california-housing-dataset",
-        "name": "03 - California Housing Dataset - [Regression]",
+        "name": "04 - California Housing Dataset - [Regression]",
         "type": "regression",
         "format": "csv",
         "description": "Median House Price Regression",
@@ -28,11 +37,20 @@
     },
     {
         "id": "wine-dataset",
-        "name": "04 - Wine Quality Dataset - [Regression]",
+        "name": "05 - Wine Quality Dataset - [Regression]",
         "type": "regression",
         "format": "csv",
-        "description": "Wine quality score regression (1599 rows x 12 cols)",
+        "description": "Wine Quality Score Regression",
         "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
         "target_col": "quality"
+    },
+    {
+        "id": "diamonds-dataset",
+        "name": "06 - Diamonds Dataset - [Regression]",
+        "type": "regression",
+        "format": "csv",
+        "description": "Diamond Price Regression with Ordinal Categoricals",
+        "url": "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/diamonds.csv",
+        "target_col": "price"
     }
 ]

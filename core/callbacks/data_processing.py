@@ -2,14 +2,14 @@ from dash import Output, Input, State
 from dash import ctx
 import pandas as pd
 
-from core.view.dataset_analyzer_toolbox import DatasetAnalyzerToolbox
+from core.view.data_analyzer_toolbox import DataAnalyzerToolbox
 from utils.helpers import HelperFunc
 from utils.dataframe import (
     HIDDEN, VISIBLE, dropdown_options, table_columns, shape_label, preview_data,
 )
 
 class DataProcessingCallbacks:
-    def __init__(self, view: DatasetAnalyzerToolbox) -> None:
+    def __init__(self, view: DataAnalyzerToolbox) -> None:
         self.view = view
         self.helper_func_func = HelperFunc()
 
