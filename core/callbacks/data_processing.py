@@ -1,17 +1,20 @@
-from dash import Output, Input, State
-from dash import ctx
 import pandas as pd
 
-from core.view.dataset_analyzer_toolbox import DatasetAnalyzerToolbox
+from dash import ctx
+from dash import Output, Input, State
+from core.view.data_analyzer_toolbox import DataAnalyzerToolbox
 from utils.helpers import HelperFunc
 from utils.dataframe import (
-    HIDDEN, VISIBLE, dropdown_options, table_columns, shape_label, preview_data,
+    HIDDEN, VISIBLE, 
+    table_columns, 
+    shape_label,
+    preview_data,
+    dropdown_options
 )
 
 class DataProcessingCallbacks:
-    def __init__(self, view: DatasetAnalyzerToolbox) -> None:
+    def __init__(self, view: DataAnalyzerToolbox) -> None:
         self.view = view
-        self.helper_func_func = HelperFunc()
 
     def register_callbacks(self):
         @self.view.app.callback(
@@ -61,7 +64,7 @@ class DataProcessingCallbacks:
             df = pd.DataFrame(records)
             before = int(df[col].isnull().sum())
             if before == 0:
-                msg = self.helper_func_func.generate_alert(f"'{col}' has no Missing Values", color="info")
+                msg = HelperFunc().generate_alert(f"'{col}' has no Missing Values", color="info")
                 return df.to_dict("records"), table_columns(df), preview_data(df), shape_label(df), msg
             try:
                 if strategy == "mean":
@@ -81,12 +84,12 @@ class DataProcessingCallbacks:
                     df = df.dropna(subset=[col])
                 after  = int(df[col].isnull().sum())
                 filled = before - after
-                msg    = self.helper_func_func.generate_alert(
+                msg    = HelperFunc().generate_alert(
                     f"'{col}': {filled} Null(s) Handled Using '{strategy}'. Remaining Nulls: {after}",
                     color="success"
                 )
             except Exception as e:
-                msg = self.helper_func_func.generate_alert(f"Error: {str(e)}", color="danger")
+                msg = HelperFunc().generate_alert(f"Error: {str(e)}", color="danger")
             return df.to_dict("records"), table_columns(df), preview_data(df), shape_label(df), msg
 
         @self.view.app.callback(
@@ -111,12 +114,12 @@ class DataProcessingCallbacks:
                 keep_arg   = False if keep == "none" else keep
                 df         = df.drop_duplicates(subset=subset_arg, keep=keep_arg)
                 removed    = before - len(df)
-                msg = self.helper_func_func.generate_alert(
+                msg = HelperFunc().generate_alert(
                     f"Removed {removed} Duplicate Row(s)! Dataset Now has {len(df):,} Rows",
                     color="success" if removed > 0 else "info"
                 )
             except Exception as e:
-                msg = self.helper_func_func.generate_alert(f"Error: {str(e)}", color="danger")
+                msg = HelperFunc().generate_alert(f"Error: {str(e)}", color="danger")
             return df.to_dict("records"), table_columns(df), preview_data(df), shape_label(df), msg
 
         @self.view.app.callback(
@@ -143,22 +146,22 @@ class DataProcessingCallbacks:
             try:
                 if trigger == "proc-rename-btn":
                     if not new_name or not new_name.strip():
-                        msg = self.helper_func_func.generate_alert("Please Enter a New Column Name!", color="warning")
+                        msg = HelperFunc().generate_alert("Please Enter a New Column Name!", color="warning")
                     elif new_name.strip() in df.columns:
-                        msg = self.helper_func_func.generate_alert(f"Column '{new_name.strip()}' Already Exists.", color="warning")
+                        msg = HelperFunc().generate_alert(f"Column '{new_name.strip()}' Already Exists.", color="warning")
                     else:
                         df.rename(columns={col: new_name.strip()}, inplace=True)
-                        msg = self.helper_func_func.generate_alert(f"'{col}' Renamed to '{new_name.strip()}'.", color="success")
+                        msg = HelperFunc().generate_alert(f"'{col}' Renamed to '{new_name.strip()}'.", color="success")
                 elif trigger == "proc-drop-btn":
                     df.drop(columns=[col], inplace=True)
-                    msg = self.helper_func_func.generate_alert(
+                    msg = HelperFunc().generate_alert(
                         f"Column '{col}' Dropped! {len(df.columns)} Column(s) Remaining",
                         color="success"
                     )
                 else:
                     return records, [], [], "", None, [], [], []
             except Exception as e:
-                msg = self.helper_func_func.generate_alert(f"Error: {str(e)}", color="danger")
+                msg = HelperFunc().generate_alert(f"Error: {str(e)}", color="danger")
 
             options = dropdown_options(df.columns)
             return df.to_dict("records"), table_columns(df), preview_data(df), shape_label(df), msg, options, options, options

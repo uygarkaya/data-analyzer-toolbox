@@ -1,11 +1,11 @@
-from dash import Output, Input
 import pandas as pd
 
-from core.view.dataset_analyzer_toolbox import DatasetAnalyzerToolbox
+from dash import Output, Input
+from core.view.data_analyzer_toolbox import DataAnalyzerToolbox
 from utils.dataframe import HIDDEN, VISIBLE
 
 class DataOverviewCallbacks:
-    def __init__(self, view: DatasetAnalyzerToolbox) -> None:
+    def __init__(self, view: DataAnalyzerToolbox) -> None:
         self.view = view
 
     def register_callbacks(self):

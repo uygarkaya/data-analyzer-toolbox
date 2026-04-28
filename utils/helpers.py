@@ -1,11 +1,59 @@
-from dash import html, dcc
+from dash import html, dcc, dash_table
 from pathlib import Path
-import json
+from utils.constants import (
+    TYPE_STYLES,
+    SECTION_TITLE_STYLE,
+    SECTION_SUBTITLE_STYLE,
+    LABEL_STYLE,
+    CARD_STYLE,
+    TABLE_STYLE,
+)
+
 import dash_bootstrap_components as dbc
+import json
 
 class HelperFunc:
     def __init__(self) -> None:
         pass
+
+    def page_header(self, title: str, subtitle: str) -> html.Div:
+        return html.Div(
+            [
+                html.H4(title, style=SECTION_TITLE_STYLE),
+                html.H6(subtitle, style=SECTION_SUBTITLE_STYLE),
+            ]
+        )
+
+    def field_label(self, text: str) -> html.Label:
+        return html.Label(text, style=LABEL_STYLE)
+
+    def preview_card(self, title: str, table_id: str, shape_id: str = None) -> dbc.Card:
+        header_children = [
+            html.Span(
+                title,
+                style={"fontWeight": "700", "fontSize": "15px", "display": "block"},
+            )
+        ]
+        if shape_id:
+            header_children.append(
+                html.Span(id=shape_id, style={"fontSize": "12px", "color": "#6C757D"})
+            )
+        return dbc.Card(
+            [
+                dbc.CardHeader(html.Div(header_children)),
+                dbc.CardBody(
+                    dash_table.DataTable(
+                        id=table_id,
+                        page_size=10,
+                        style_table=TABLE_STYLE["table"],
+                        style_header=TABLE_STYLE["header"],
+                        style_cell={**TABLE_STYLE["cell"], "fontFamily": "inherit"},
+                        style_data_conditional=TABLE_STYLE["striped"],
+                    )
+                ),
+            ],
+            style=CARD_STYLE,
+        )
 
     def no_data_alert(self, msg_id, icon_class="bi bi-database-x") -> html.Div:
         return html.Div(
@@ -13,7 +61,7 @@ class HelperFunc:
             children=dbc.Alert(
                 [
                     html.I(className=f"{icon_class} me-2"),
-                    "No Dataset Loaded Yet. Upload or Select a Sample Dataset to Begin"
+                    "No Dataset Loaded Yet. Select a Dataset to Begin"
                 ],
                 color="danger",
                 style={
@@ -100,11 +148,7 @@ class HelperFunc:
                         color=color
                     )
                 ]),
-                style={
-                    "borderRadius": "10px",
-                    "boxShadow": "0 1px 6px rgba(0,0,0,0.07)",
-                    "marginBottom": "20px"
-                }
+                style={**CARD_STYLE, "marginBottom": "20px"}
             )
 
         elif variant == "section":
@@ -130,11 +174,7 @@ class HelperFunc:
                     ),
                     dbc.CardBody(body)
                 ],
-                style={
-                    "borderRadius": "10px",
-                    "boxShadow": "0 1px 6px rgba(0,0,0,0.07)",
-                    "height": "100%"
-                }
+                style={**CARD_STYLE, "height": "100%"}
             )
 
         else:
@@ -169,4 +209,122 @@ class HelperFunc:
                 "boxShadow": "0 2px 8px rgba(0,0,0,0.15)",
                 "borderRadius": "5px",
             }
+        )
+    
+    def sample_dataset_card(dataset):
+        meta = TYPE_STYLES.get(
+            dataset.get("type", "").lower(),
+            {"color": "secondary"}
+        )
+
+        return dbc.Col(
+            html.Div(
+                dbc.Card(
+                    dbc.CardBody(
+                        [
+                            html.Div(
+                                [
+                                    html.Span(
+                                        dataset["name"].split(" - ")[0] if " - " in dataset["name"] else "",
+                                        style={
+                                            "fontSize": "1.4rem",
+                                            "fontWeight": "700",
+                                            "color": "#212529",
+                                            "marginRight": "10px",
+                                            "letterSpacing": "0.05em",
+                                        }
+                                    ),
+                                    dbc.Badge(
+                                        dataset.get("type", "dataset").upper(),
+                                        color=meta["color"],
+                                        className="ms-auto",
+                                        style={
+                                            "fontSize": "0.65rem",
+                                            "letterSpacing": "0.08em",
+                                            "padding": "5px 10px",
+                                        }
+                                    ),
+                                ],
+                                style={
+                                    "display": "flex",
+                                    "alignItems": "center",
+                                    "marginBottom": "10px",
+                                }
+                            ),
+                            html.Div(
+                                dataset["name"].split(" - ")[1] if " - " in dataset["name"] else dataset["name"],
+                                style={
+                                    "fontWeight": "700",
+                                    "fontSize": "0.95rem",
+                                    "color": "#212529",
+                                    "marginBottom": "6px",
+                                    "lineHeight": "1.3",
+                                }
+                            ),
+                            html.Div(
+                                dataset.get("description", ""),
+                                style={
+                                    "fontSize": "0.80rem",
+                                    "color": "#6C757D",
+                                    "marginBottom": "12px",
+                                    "minHeight": "36px",
+                                }
+                            ),
+                            html.Div(
+                                [
+                                    html.Span(
+                                        "TARGET",
+                                        style={
+                                            "fontSize": "0.65rem",
+                                            "fontWeight": "700",
+                                            "color": "#ADB5BD",
+                                            "letterSpacing": "0.08em",
+                                            "marginRight": "6px",
+                                        }
+                                    ),
+                                    html.Code(
+                                        (dataset.get("target_col") or "—").upper(),
+                                        style={
+                                            "fontSize": "0.75rem",
+                                            "backgroundColor": "#F1F3F5",
+                                            "padding": "2px 8px",
+                                            "borderRadius": "4px",
+                                            "color": "#0D6EFD",
+                                        }
+                                    ),
+                                    dbc.Badge(
+                                        dataset.get("format", "csv").upper(),
+                                        color="light",
+                                        text_color="dark",
+                                        className="ms-auto",
+                                        style={
+                                            "fontSize": "0.65rem",
+                                            "border": "1px solid #dee2e6",
+                                        }
+                                    ),
+                                ],
+                                style={
+                                    "display": "flex",
+                                    "alignItems": "center",
+                                    "borderTop": "1px solid #f1f3f5",
+                                    "paddingTop": "10px",
+                                }
+                            ),
+                        ]
+                    ),
+                    style={
+                        "borderRadius": "12px",
+                        "border": "1px solid #e9ecef",
+                        "height": "100%",
+                        "transition": "all 0.2s ease",
+                        "cursor": "pointer",
+                    },
+                    className="sample-dataset-card h-100 shadow-sm",
+                ),
+                id={"type": "sample-dataset-btn", "index": dataset["id"]},
+                n_clicks=0,
+                style={"cursor": "pointer", "height": "100%"},
+            ),
+            xs=12, sm=6, lg=6, xl=4,
+            className="mb-3",
         )

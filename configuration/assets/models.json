@@ -1,0 +1,102 @@
+{
+    "hyperparameter_fields": [
+        {"id": "C", "label": "Regularization (C)", "default": 1.0, "min": 0.001, "step": 0.1, "kind": "float"},
+        {"id": "n_estimators", "label": "Number of Trees", "default": 200, "min": 50, "step": 50, "kind": "int"},
+        {"id": "max_depth", "label": "Max Depth", "default": 6, "min": 2, "step": 1, "kind": "int"},
+        {"id": "learning_rate", "label": "Learning Rate", "default": 0.1, "min": 0.01, "step": 0.01, "kind": "float"},
+        {"id": "min_samples_leaf", "label": "Min Samples Leaf", "default": 5, "min": 1, "step": 1, "kind": "int"}
+    ],
+    "families": [
+        {
+            "value": "baseline",
+            "label": "Baseline",
+            "task": "auto",
+            "shap_explainer": "linear",
+            "algorithms": [
+                {
+                    "value": "logistic_regression",
+                    "label": "Logistic Regression — Baseline",
+                    "class": "sklearn.linear_model.LogisticRegression",
+                    "task": "classification",
+                    "params": {"max_iter": 2000, "random_state": 42, "class_weight": "balanced", "solver": "lbfgs"},
+                    "ui_fields": [{"field": "C", "param": "C"}],
+                    "supports_proba": true
+                },
+                {
+                    "value": "ridge_regression",
+                    "label": "Ridge Regression — Baseline",
+                    "class": "sklearn.linear_model.Ridge",
+                    "task": "regression",
+                    "params": {"random_state": 42},
+                    "ui_fields": [{"field": "C", "param": "alpha"}]
+                }
+            ]
+        },
+        {
+            "value": "tree",
+            "label": "Tree-Based",
+            "task": "auto",
+            "shap_explainer": "tree",
+            "algorithms": [
+                {
+                    "value": "random_forest_clf",
+                    "label": "Random Forest",
+                    "class": "sklearn.ensemble.RandomForestClassifier",
+                    "task": "classification",
+                    "params": {"random_state": 42, "n_jobs": -1, "class_weight": "balanced_subsample"},
+                    "ui_fields": [
+                        {"field": "n_estimators", "param": "n_estimators"},
+                        {"field": "max_depth", "param": "max_depth"},
+                        {"field": "min_samples_leaf", "param": "min_samples_leaf"}
+                    ],
+                    "supports_proba": true
+                },
+                {
+                    "value": "random_forest_reg",
+                    "label": "Random Forest",
+                    "class": "sklearn.ensemble.RandomForestRegressor",
+                    "task": "regression",
+                    "params": {"random_state": 42, "n_jobs": -1},
+                    "ui_fields": [
+                        {"field": "n_estimators", "param": "n_estimators"},
+                        {"field": "max_depth", "param": "max_depth"},
+                        {"field": "min_samples_leaf", "param": "min_samples_leaf"}
+                    ]
+                }
+            ]
+        },
+        {
+            "value": "boosting",
+            "label": "Gradient Boosting",
+            "task": "auto",
+            "shap_explainer": "tree",
+            "algorithms": [
+                {
+                    "value": "xgboost_clf",
+                    "label": "XGBoost",
+                    "class": "xgboost.XGBClassifier",
+                    "task": "classification",
+                    "params": {"random_state": 42, "n_jobs": -1, "tree_method": "hist", "eval_metric": "logloss"},
+                    "ui_fields": [
+                        {"field": "n_estimators", "param": "n_estimators"},
+                        {"field": "max_depth", "param": "max_depth"},
+                        {"field": "learning_rate", "param": "learning_rate"}
+                    ],
+                    "supports_proba": true
+                },
+                {
+                    "value": "xgboost_reg",
+                    "label": "XGBoost",
+                    "class": "xgboost.XGBRegressor",
+                    "task": "regression",
+                    "params": {"random_state": 42, "n_jobs": -1, "tree_method": "hist"},
+                    "ui_fields": [
+                        {"field": "n_estimators", "param": "n_estimators"},
+                        {"field": "max_depth", "param": "max_depth"},
+                        {"field": "learning_rate", "param": "learning_rate"}
+                    ]
+                }
+            ]
+        }
+    ]
+}

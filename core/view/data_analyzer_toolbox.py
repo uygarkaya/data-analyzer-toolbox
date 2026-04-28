@@ -4,7 +4,7 @@ from .components.footer import Footer
 from .components.center import Center
 import dash_bootstrap_components as dbc
 
-class DatasetAnalyzerToolbox:
+class DataAnalyzerToolbox:
     def __init__(self):
         self.app = Dash(
             __name__, 
@@ -14,7 +14,7 @@ class DatasetAnalyzerToolbox:
             ],
             suppress_callback_exceptions=True, 
             prevent_initial_callbacks="initial_duplicate",
-            title='Dataset Analyzer Toolbox'
+            title='Data Analyzer Toolbox'
         )
 
         self.app.layout = self.serve_app_layout()

@@ -18,15 +18,26 @@ class DatasetAPI:
             return None, None, f"Dataset '{dataset_id}' Not Found in Registry!"
 
         try:
-            resp = requests.get(entry["url"], timeout=30)
+            resp = requests.get(entry["url"], timeout=60)
             resp.raise_for_status()
         except requests.RequestException as exc:
             return None, entry, f"Download Failed: {exc}"
 
         try:
             if entry["format"] == "csv":
-                sep = ";" if "winequality" in (entry["url"] or "") else ","
-                df = pd.read_csv(io.StringIO(resp.text), sep=sep)
+                read_kwargs = {
+                    "sep": entry.get("sep", ","),
+                    "skiprows": entry.get("skiprows", 0),
+                    "compression": entry.get("compression", "infer"),
+                }
+                if "columns" in entry:
+                    read_kwargs["names"] = entry["columns"]
+                    read_kwargs["header"] = None
+
+                df = pd.read_csv(io.BytesIO(resp.content) if read_kwargs["compression"] not in (None, "infer") or entry["url"].endswith((".gz", ".zip", ".bz2", ".xz")) else io.StringIO(resp.text), **read_kwargs)
+                if entry.get("target_col") and entry.get("target_col") not in df.columns:
+                    return None, entry, f"Expected Target Column '{entry.get('target_col')}' Not Found in Downloaded Data!"
+
                 if len(df) > 2000:
                     df = df.sample(2000, random_state=42).reset_index(drop=True)
                 return df, entry, None

@@ -1,38 +1,39 @@
 [
     {
-        "id": "iris-dataset",
-        "name": "01 - Iris Flowers Dataset - [Multiclass Classification]",
+        "id": "chicago-crashes-dataset",
+        "name": "01 - Chicago Traffic Crashes",
         "type": "classification",
         "format": "csv",
-        "description": "Classic Multiclass Classification Dataset (150 rows x 5 cols)",
-        "url": "https://raw.githubusercontent.com/mwaskom/seaborn-data/master/iris.csv",
-        "target_col": "species"
+        "description": "Chicago Crash Severity Classification with Weather, Lighting, Road Conditions",
+        "url": "https://data.cityofchicago.org/resource/85ca-t3if.csv?$select=crash_date,posted_speed_limit,weather_condition,lighting_condition,first_crash_type,trafficway_type,roadway_surface_cond,road_defect,prim_contributory_cause,injuries_total,crash_hour,crash_day_of_week,crash_month&$limit=15000",
+        "target_col": "injuries_total"
     },
     {
-        "id": "titanic-dataset",
-        "name": "02 - Titanic Passengers Dataset - [Binary Survival Classification]",
+        "id": "metro-traffic-dataset",
+        "name": "02 - Metro Interstate Traffic Volume",
+        "type": "regression",
+        "format": "csv",
+        "description": "UCI Hourly Interstate Traffic Volume Regression",
+        "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/00492/Metro_Interstate_Traffic_Volume.csv.gz",
+        "target_col": "traffic_volume",
+        "compression": "gzip"
+    },
+    {
+        "id": "ai4i-maintenance-dataset",
+        "name": "03 - AI4I 2020 Predictive Maintenance",
         "type": "classification",
         "format": "csv",
-        "description": "Binary Survival Classification (891 rows x 12 cols)",
-        "url": "https://raw.githubusercontent.com/datasciencedojo/datasets/master/titanic.csv",
-        "target_col": "Survived"
+        "description": "Vehicle/Machine Component Failure Binary Classification",
+        "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/00601/ai4i2020.csv",
+        "target_col": "Machine failure"
     },
     {
-        "id": "california-housing-dataset",
-        "name": "03 - California Housing Dataset - [Regression]",
+        "id": "auto-mpg-dataset",
+        "name": "04 - Auto MPG",
         "type": "regression",
         "format": "csv",
-        "description": "Median House Price Regression",
-        "url": "https://raw.githubusercontent.com/ageron/handson-ml2/master/datasets/housing/housing.csv",
-        "target_col": "median_house_value"
-    },
-    {
-        "id": "wine-dataset",
-        "name": "04 - Wine Quality Dataset - [Regression]",
-        "type": "regression",
-        "format": "csv",
-        "description": "Wine quality score regression (1599 rows x 12 cols)",
-        "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/wine-quality/winequality-red.csv",
-        "target_col": "quality"
+        "description": "Vehicle Fuel Efficiency (Miles Per Gallon) Regression",
+        "url": "https://gist.githubusercontent.com/wmeints/80c1ba22ceeb7a29a0e5e979f0b0afba/raw/8629fe51f0e7642fc5e05567130807b02a93af5e/auto-mpg.csv",
+        "target_col": "mpg"
     }
 ]

@@ -1,17 +1,21 @@
-from dash import Output, Input, State, html
 import pandas as pd
 import dash_bootstrap_components as dbc
-from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder
 
-from core.view.dataset_analyzer_toolbox import DatasetAnalyzerToolbox
+from dash import Output, Input, State, html
+from sklearn.preprocessing import StandardScaler, MinMaxScaler, LabelEncoder
+from core.view.data_analyzer_toolbox import DataAnalyzerToolbox
 from utils.helpers import HelperFunc
 from utils.dataframe import (
-    HIDDEN, VISIBLE, dropdown_options, table_columns, shape_label,
-    preview_data, detect_task_type,
+    HIDDEN, VISIBLE, 
+    dropdown_options, 
+    table_columns, 
+    shape_label,
+    preview_data, 
+    detect_task_type
 )
 
 class FeatureEngineeringCallbacks:
-    def __init__(self, view: DatasetAnalyzerToolbox) -> None:
+    def __init__(self, view: DataAnalyzerToolbox) -> None:
         self.view = view
         self.helper_func_func = HelperFunc()
 
