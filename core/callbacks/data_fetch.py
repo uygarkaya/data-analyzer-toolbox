@@ -1,11 +1,13 @@
-from dash import Output, Input, ALL
-from dash import ctx
+import dash_bootstrap_components as dbc
 import pandas as pd
-import base64, io, requests
+import io, requests
 
-from core.api.dataset import DatasetAPI
-from core.view.data_analyzer_toolbox import DataAnalyzerToolbox
+from dash import Output, Input
+from dash import ctx, html, ALL
 from utils.helpers import HelperFunc
+from core.api.dataset import DatasetAPI
+from configuration.configuration import Configuration
+from core.view.data_analyzer_toolbox import DataAnalyzerToolbox
 
 class DataLoadingCallbacks:
     def __init__(self, view: DataAnalyzerToolbox) -> None:
@@ -14,40 +16,39 @@ class DataLoadingCallbacks:
 
     def register_callbacks(self):
         @self.view.app.callback(
-            Output("stored-dataset", "data", allow_duplicate=True),
-            Output("upload-alert-container", "children", allow_duplicate=True),
-            Input("upload-dataset", "contents"),
-            prevent_initial_call=True
+            Output("fetch-data-tab-content", "children"),
+            Input("fetch-data-tabs", "value"),
         )
-        def store_uploaded_dataset(contents):
-            if contents is None:
-                return None, None
-
-            content_type, content_string = contents.split(",")
-            if "csv" not in content_type:
-                alert = self.helper_func_func.generate_alert(
-                    "Unsupported File Format! Please Upload a CSV File",
-                    color="danger"
+        def render_fetch_data_tab(value):
+            if value == "fetch-data-sample":
+                return html.Div(
+                    dbc.Row(
+                        [HelperFunc.sample_dataset_card(d) for d in Configuration().sample_datasets],
+                        className="g-3",
+                    ),
+                    style={"padding": "4px"},
                 )
-                return None, alert
-
-            try:
-                decoded = base64.b64decode(content_string)
-                df = pd.read_csv(io.StringIO(decoded.decode("utf-8")))
-
-                alert = self.helper_func_func.generate_alert(
-                    "Dataset Uploaded Successfully!",
-                    color="success"
-                )
-
-                return df.to_dict("records"), alert
-
-            except Exception as e:
-                alert = self.helper_func_func.generate_alert(
-                    f"Error Reading File: {str(e)}",
-                    color="danger"
-                )
-                return None, alert
+            return dbc.Row(
+                [
+                    dbc.Col(
+                        dbc.Input(
+                            id="api-url",
+                            placeholder="https://api.example.com/dataset",
+                            type="text",
+                        ),
+                        width=9,
+                    ),
+                    dbc.Col(
+                        dbc.Button(
+                            "Fetch Data",
+                            id="fetch-api-btn",
+                            color="primary",
+                            className="w-100",
+                        ),
+                        width=3,
+                    ),
+                ]
+            )
 
         @self.view.app.callback(
             Output("stored-dataset", "data", allow_duplicate=True),

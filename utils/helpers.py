@@ -1,6 +1,13 @@
-from dash import html, dcc
+from dash import html, dcc, dash_table
 from pathlib import Path
-from utils.constants import TYPE_STYLES
+from utils.constants import (
+    TYPE_STYLES,
+    SECTION_TITLE_STYLE,
+    SECTION_SUBTITLE_STYLE,
+    LABEL_STYLE,
+    CARD_STYLE,
+    TABLE_STYLE,
+)
 
 import dash_bootstrap_components as dbc
 import json
@@ -9,13 +16,52 @@ class HelperFunc:
     def __init__(self) -> None:
         pass
 
+    def page_header(self, title: str, subtitle: str) -> html.Div:
+        return html.Div(
+            [
+                html.H4(title, style=SECTION_TITLE_STYLE),
+                html.H6(subtitle, style=SECTION_SUBTITLE_STYLE),
+            ]
+        )
+
+    def field_label(self, text: str) -> html.Label:
+        return html.Label(text, style=LABEL_STYLE)
+
+    def preview_card(self, title: str, table_id: str, shape_id: str = None) -> dbc.Card:
+        header_children = [
+            html.Span(
+                title,
+                style={"fontWeight": "700", "fontSize": "15px", "display": "block"},
+            )
+        ]
+        if shape_id:
+            header_children.append(
+                html.Span(id=shape_id, style={"fontSize": "12px", "color": "#6C757D"})
+            )
+        return dbc.Card(
+            [
+                dbc.CardHeader(html.Div(header_children)),
+                dbc.CardBody(
+                    dash_table.DataTable(
+                        id=table_id,
+                        page_size=10,
+                        style_table=TABLE_STYLE["table"],
+                        style_header=TABLE_STYLE["header"],
+                        style_cell={**TABLE_STYLE["cell"], "fontFamily": "inherit"},
+                        style_data_conditional=TABLE_STYLE["striped"],
+                    )
+                ),
+            ],
+            style=CARD_STYLE,
+        )
+
     def no_data_alert(self, msg_id, icon_class="bi bi-database-x") -> html.Div:
         return html.Div(
             id=msg_id,
             children=dbc.Alert(
                 [
                     html.I(className=f"{icon_class} me-2"),
-                    "No Dataset Loaded Yet. Upload or Select a Sample Dataset to Begin"
+                    "No Dataset Loaded Yet. Select a Dataset to Begin"
                 ],
                 color="danger",
                 style={
@@ -102,11 +148,7 @@ class HelperFunc:
                         color=color
                     )
                 ]),
-                style={
-                    "borderRadius": "10px",
-                    "boxShadow": "0 1px 6px rgba(0,0,0,0.07)",
-                    "marginBottom": "20px"
-                }
+                style={**CARD_STYLE, "marginBottom": "20px"}
             )
 
         elif variant == "section":
@@ -132,11 +174,7 @@ class HelperFunc:
                     ),
                     dbc.CardBody(body)
                 ],
-                style={
-                    "borderRadius": "10px",
-                    "boxShadow": "0 1px 6px rgba(0,0,0,0.07)",
-                    "height": "100%"
-                }
+                style={**CARD_STYLE, "height": "100%"}
             )
 
         else:

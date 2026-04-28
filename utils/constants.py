@@ -49,6 +49,50 @@ TABLE_STYLE = {
     ],
 }
 
+SECTION_TITLE_STYLE = {
+    "fontWeight": "700",
+    "marginBottom": "4px",
+}
+
+SECTION_SUBTITLE_STYLE = {
+    "color": "#6C757D",
+    "marginBottom": "24px",
+    "fontWeight": "400",
+}
+
+LABEL_STYLE = {
+    "fontWeight": "600",
+    "fontSize": "13px",
+}
+
+CARD_STYLE = {
+    "borderRadius": "10px",
+    "boxShadow": "0 1px 6px rgba(0,0,0,0.07)",
+}
+
+SECTION_DIVIDER_STYLE = {
+    "margin": "32px 0 24px 0",
+    "border": "none",
+    "borderTop": "1px solid #DEE2E6",
+}
+
+_INNER_TAB_BASE = {
+    "padding": "6px 12px",
+    "fontSize": "0.80rem",
+    "fontWeight": "700",
+    "letterSpacing": "0.05em",
+    "textTransform": "uppercase",
+    "border": "none",
+    "backgroundColor": "transparent",
+}
+
+INNER_TAB_STYLE = {**_INNER_TAB_BASE}
+INNER_TAB_SELECTED_STYLE = {
+    **_INNER_TAB_BASE,
+    "borderBottom": "2px solid #0D6EFD",
+    "color": "#0D6EFD",
+}
+
 CHART_LAYOUT = {
     "margin": dict(l=20, r=20, t=20, b=20),
     "template": "plotly_white",

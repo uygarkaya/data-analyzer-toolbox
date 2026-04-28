@@ -1,12 +1,11 @@
-from dash import Output, Input
 import pandas as pd
-import plotly.graph_objects as go
 import plotly.express as px
+import plotly.graph_objects as go
 
+from dash import Output, Input
 from core.view.data_analyzer_toolbox import DataAnalyzerToolbox
 from utils.dataframe import HIDDEN, VISIBLE, dropdown_options
 from utils.constants import CHART_LAYOUT
-ACCENT_COLOR = "#0D6EFD"
 
 class EdaCallbacks:
     def __init__(self, view: DataAnalyzerToolbox) -> None:
@@ -52,7 +51,7 @@ class EdaCallbacks:
                 df,
                 x=col,
                 nbins=40,
-                color_discrete_sequence=[ACCENT_COLOR],
+                color_discrete_sequence=["#0D6EFD"],
                 template="plotly_white"
             )
             fig.update_layout(
@@ -115,7 +114,7 @@ class EdaCallbacks:
             fig = px.box(
                 df,
                 y=col,
-                color_discrete_sequence=[ACCENT_COLOR],
+                color_discrete_sequence=["#0D6EFD"],
                 template="plotly_white",
                 points="outliers"
             )
@@ -139,7 +138,7 @@ class EdaCallbacks:
                 counts,
                 x=col,
                 y="count",
-                color_discrete_sequence=[ACCENT_COLOR],
+                color_discrete_sequence=["#0D6EFD"],
                 template="plotly_white"
             )
             fig.update_layout(

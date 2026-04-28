@@ -1,6 +1,6 @@
-from dash import Output, Input
 import pandas as pd
 
+from dash import Output, Input
 from core.view.data_analyzer_toolbox import DataAnalyzerToolbox
 from utils.dataframe import HIDDEN, VISIBLE
 
