@@ -1,6 +1,7 @@
 from core.view.components.tabs.data_explorer import DataExplorer
 from core.view.components.tabs.data_processing import DataProcessing
 from core.view.components.tabs.feature_engineering import FeatureEngineering
+from core.view.components.tabs.train_evaluate import TrainEvaluate
 from configuration.environment import Environment
 from utils.helpers import HelperFunc
 from typing import Dict
@@ -24,6 +25,7 @@ class Configuration:
             "tab-explore": DataExplorer,
             "tab-process": DataProcessing,
             "tab-feature": FeatureEngineering,
+            "tab-train": TrainEvaluate,
         }
 
         self.sample_datasets: list = HelperFunc().load_json(self.environment['DATASET_URL'])

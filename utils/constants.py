@@ -94,9 +94,15 @@ INNER_TAB_SELECTED_STYLE = {
 }
 
 CHART_LAYOUT = {
-    "margin": dict(l=20, r=20, t=20, b=20),
+    "margin": dict(l=20, r=20, t=55, b=20),
     "template": "plotly_white",
     "font": dict(family="sans-serif"),
+    "title_y": 0.92,
+    "title_yanchor": "top",
+    "title_x": 0.5,
+    "title_xanchor": "center",
+    "title_pad": dict(t=12),
+    "title_font": dict(size=13),
 }
 
 TYPE_STYLES = {
@@ -106,4 +112,18 @@ TYPE_STYLES = {
     "regression": {
         "color": "success"
     },
+}
+
+METRIC_COLORS = {
+    "macro_f1": "#0D6EFD", "accuracy": "#6C757D",
+    "rmse": "#DC3545", "mae": "#FD7E14",
+    "med_ae": "#6F42C1", "r2": "#198754",
+}
+
+METRIC_LABEL = {
+    "macro_f1": "Macro F1",
+    "accuracy": "Accuracy", "r2": "R²",
+    "rmse": "Root Mean Square Error", 
+    "mae": "Mean Absolute Error",
+    "med_ae": "Median Absolute Error",
 }
