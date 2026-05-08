@@ -4,6 +4,8 @@ from core.callbacks.data_overview import DataOverviewCallbacks
 from core.callbacks.exp_data_analysis import EdaCallbacks
 from core.callbacks.data_processing import DataProcessingCallbacks
 from core.callbacks.feature_engineering import FeatureEngineeringCallbacks
+from core.callbacks.train_evaluate import TrainEvaluateCallbacks
+from core.callbacks.explainability import ExplainabilityCallbacks
 from configuration.configuration import Configuration
 
 class DatasetAnalyzerApplication:
@@ -15,6 +17,8 @@ class DatasetAnalyzerApplication:
         self.eda_callbacks = EdaCallbacks(self.dashboard)
         self.data_processing_callbacks = DataProcessingCallbacks(self.dashboard)
         self.feature_engineering_callbacks = FeatureEngineeringCallbacks(self.dashboard)
+        self.train_evaluate_callbacks = TrainEvaluateCallbacks(self.dashboard)
+        self.explainability_callbacks = ExplainabilityCallbacks(self.dashboard)
 
 def main():
     """
@@ -26,6 +30,8 @@ def main():
     app.eda_callbacks.register_callbacks()
     app.data_processing_callbacks.register_callbacks()
     app.feature_engineering_callbacks.register_callbacks()
+    app.train_evaluate_callbacks.register_callbacks()
+    app.explainability_callbacks.register_callbacks()
 
     app.dashboard.app.run(
         debug=True,

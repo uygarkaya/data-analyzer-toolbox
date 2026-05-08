@@ -89,7 +89,7 @@ class FeatureEngineeringCallbacks:
             df = pd.DataFrame(records)
             n_unique = df[col].nunique()
             if method == "onehot":
-                return f"{n_unique} Unique Values → {n_unique - 1} New Columns (Drop_First)"
+                return f"{n_unique} Unique Values → {n_unique} New Columns"
             elif method == "label":
                 return f"{n_unique} Unique Values → Integer 0..{n_unique - 1}"
             return f"{n_unique} Unique Values"
@@ -125,7 +125,7 @@ class FeatureEngineeringCallbacks:
                     )
                 elif method == "onehot":
                     before = df.shape[1]
-                    df = pd.get_dummies(df, columns=[col], prefix=[col], drop_first=True, dtype=int)
+                    df = pd.get_dummies(df, columns=[col], prefix=[col], drop_first=False, dtype=int)
                     after = df.shape[1]
                     msg = self.helper_func_func.generate_alert(
                         f"One-Hot Encoded '{col}': {before} → {after} Columns (+{after - before} New)",
@@ -218,15 +218,11 @@ class FeatureEngineeringCallbacks:
             task_type, _ = detect_task_type(y)
 
             try:
-                from sklearn.utils.multiclass import type_of_target
                 from sklearn.model_selection import train_test_split, KFold, StratifiedKFold
 
-                sk_target = type_of_target(y)
-                is_classification = sk_target in ("binary", "multiclass")
-                if not is_classification:
-                    task_type = "Regression"
+                is_classification = task_type in ("Binary Classification", "Multiclass Classification")
 
-                stratify_col = y if is_classification else None
+                stratify_col = y if is_classification and y.value_counts().min() >= 2 else None
                 rs = int(random_state) if random_state is not None else 42
                 n_splits = int(cv_folds) if cv_folds is not None else 5
                 X_train, X_test, y_train, y_test = train_test_split(
