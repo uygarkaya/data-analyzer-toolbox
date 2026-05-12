@@ -34,6 +34,8 @@
         "format": "csv",
         "description": "Vehicle Fuel Efficiency (Miles Per Gallon) Regression",
         "url": "https://gist.githubusercontent.com/wmeints/80c1ba22ceeb7a29a0e5e979f0b0afba/raw/8629fe51f0e7642fc5e05567130807b02a93af5e/auto-mpg.csv",
-        "target_col": "mpg"
+        "target_col": "mpg",
+        "na_values": ["?"],
+        "numeric_cols": ["horsepower"]
     }
 ]

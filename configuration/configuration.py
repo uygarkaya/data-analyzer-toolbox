@@ -3,6 +3,7 @@ from core.view.components.tabs.data_processing import DataProcessing
 from core.view.components.tabs.feature_engineering import FeatureEngineering
 from core.view.components.tabs.train_evaluate import TrainEvaluate
 from core.view.components.tabs.explainability import Explainability
+from core.view.components.tabs.what_if import WhatIf
 from configuration.environment import Environment
 from utils.helpers import HelperFunc
 from typing import Dict
@@ -28,6 +29,7 @@ class Configuration:
             "tab-feature": FeatureEngineering,
             "tab-train": TrainEvaluate,
             "tab-explainability": Explainability,
+            "tab-what-if": WhatIf,
         }
 
         self.sample_datasets: list = HelperFunc().load_json(self.environment['DATASET_URL'])

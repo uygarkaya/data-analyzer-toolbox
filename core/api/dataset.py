@@ -33,8 +33,14 @@ class DatasetAPI:
                 if "columns" in entry:
                     read_kwargs["names"] = entry["columns"]
                     read_kwargs["header"] = None
+                if "na_values" in entry:
+                    read_kwargs["na_values"] = entry["na_values"]
 
                 df = pd.read_csv(io.BytesIO(resp.content) if read_kwargs["compression"] not in (None, "infer") or entry["url"].endswith((".gz", ".zip", ".bz2", ".xz")) else io.StringIO(resp.text), **read_kwargs)
+
+                for col in entry.get("numeric_cols", []):
+                    if col in df.columns:
+                        df[col] = pd.to_numeric(df[col], errors="coerce")
                 if entry.get("target_col") and entry.get("target_col") not in df.columns:
                     return None, entry, f"Expected Target Column '{entry.get('target_col')}' Not Found in Downloaded Data!"
 
