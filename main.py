@@ -6,6 +6,7 @@ from core.callbacks.data_processing import DataProcessingCallbacks
 from core.callbacks.feature_engineering import FeatureEngineeringCallbacks
 from core.callbacks.train_evaluate import TrainEvaluateCallbacks
 from core.callbacks.explainability import ExplainabilityCallbacks
+from core.callbacks.what_if import WhatIfCallbacks
 from configuration.configuration import Configuration
 
 class DatasetAnalyzerApplication:
@@ -19,6 +20,7 @@ class DatasetAnalyzerApplication:
         self.feature_engineering_callbacks = FeatureEngineeringCallbacks(self.dashboard)
         self.train_evaluate_callbacks = TrainEvaluateCallbacks(self.dashboard)
         self.explainability_callbacks = ExplainabilityCallbacks(self.dashboard)
+        self.what_if_callbacks = WhatIfCallbacks(self.dashboard)
 
 def main():
     """
@@ -32,6 +34,7 @@ def main():
     app.feature_engineering_callbacks.register_callbacks()
     app.train_evaluate_callbacks.register_callbacks()
     app.explainability_callbacks.register_callbacks()
+    app.what_if_callbacks.register_callbacks()
 
     app.dashboard.app.run(
         debug=True,

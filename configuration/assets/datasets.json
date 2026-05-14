@@ -9,14 +9,15 @@
         "target_col": "injuries_total"
     },
     {
-        "id": "metro-traffic-dataset",
-        "name": "02 - Metro Interstate Traffic Volume",
+        "id": "auto-mpg-dataset",
+        "name": "04 - Auto MPG",
         "type": "regression",
         "format": "csv",
-        "description": "UCI Hourly Interstate Traffic Volume Regression",
-        "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/00492/Metro_Interstate_Traffic_Volume.csv.gz",
-        "target_col": "traffic_volume",
-        "compression": "gzip"
+        "description": "Vehicle Fuel Efficiency (Miles Per Gallon) Regression",
+        "url": "https://gist.githubusercontent.com/wmeints/80c1ba22ceeb7a29a0e5e979f0b0afba/raw/8629fe51f0e7642fc5e05567130807b02a93af5e/auto-mpg.csv",
+        "target_col": "mpg",
+        "na_values": ["?"],
+        "numeric_cols": ["horsepower"]
     },
     {
         "id": "ai4i-maintenance-dataset",
@@ -26,14 +27,5 @@
         "description": "Vehicle/Machine Component Failure Binary Classification",
         "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/00601/ai4i2020.csv",
         "target_col": "Machine failure"
-    },
-    {
-        "id": "auto-mpg-dataset",
-        "name": "04 - Auto MPG",
-        "type": "regression",
-        "format": "csv",
-        "description": "Vehicle Fuel Efficiency (Miles Per Gallon) Regression",
-        "url": "https://gist.githubusercontent.com/wmeints/80c1ba22ceeb7a29a0e5e979f0b0afba/raw/8629fe51f0e7642fc5e05567130807b02a93af5e/auto-mpg.csv",
-        "target_col": "mpg"
     }
 ]
