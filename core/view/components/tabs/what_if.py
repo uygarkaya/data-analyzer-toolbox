@@ -79,15 +79,6 @@ class WhatIf:
                                     marks={},
                                     tooltip={"placement": "bottom", "always_visible": True},
                                 ),
-                                html.Div(
-                                    id="wi-hint",
-                                    style={
-                                        "fontSize": "12px",
-                                        "color": "#6C757D",
-                                        "fontStyle": "italic",
-                                        "marginTop": "10px",
-                                    },
-                                ),
                             ],
                         ),
                         html.Hr(style={**SECTION_DIVIDER_STYLE, "margin": "16px 0"}),

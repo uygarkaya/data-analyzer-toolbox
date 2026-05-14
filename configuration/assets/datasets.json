@@ -9,25 +9,6 @@
         "target_col": "injuries_total"
     },
     {
-        "id": "metro-traffic-dataset",
-        "name": "02 - Metro Interstate Traffic Volume",
-        "type": "regression",
-        "format": "csv",
-        "description": "UCI Hourly Interstate Traffic Volume Regression",
-        "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/00492/Metro_Interstate_Traffic_Volume.csv.gz",
-        "target_col": "traffic_volume",
-        "compression": "gzip"
-    },
-    {
-        "id": "ai4i-maintenance-dataset",
-        "name": "03 - AI4I 2020 Predictive Maintenance",
-        "type": "classification",
-        "format": "csv",
-        "description": "Vehicle/Machine Component Failure Binary Classification",
-        "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/00601/ai4i2020.csv",
-        "target_col": "Machine failure"
-    },
-    {
         "id": "auto-mpg-dataset",
         "name": "04 - Auto MPG",
         "type": "regression",
@@ -37,5 +18,14 @@
         "target_col": "mpg",
         "na_values": ["?"],
         "numeric_cols": ["horsepower"]
+    },
+    {
+        "id": "ai4i-maintenance-dataset",
+        "name": "03 - AI4I 2020 Predictive Maintenance",
+        "type": "classification",
+        "format": "csv",
+        "description": "Vehicle/Machine Component Failure Binary Classification",
+        "url": "https://archive.ics.uci.edu/ml/machine-learning-databases/00601/ai4i2020.csv",
+        "target_col": "Machine failure"
     }
 ]
