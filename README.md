@@ -1,4 +1,4 @@
-# Dataset Analyzer Toolbox
+# Data Analyzer Toolbox
 
 An interactive Plotly Dash web application for end-to-end data analysis: exploration, cleaning, feature engineering, model training, explainability, what-if simulation, and artifact export — all from a single browser-based UI.
 
@@ -8,7 +8,7 @@ An interactive Plotly Dash web application for end-to-end data analysis: explora
 
 Practitioners working with tabular data often rely on multiple notebooks and scripts for data analysis, model training, and evaluation. However, the main challenge is not only training a high-performing model, but also understanding why the model makes certain decisions and how changes in the data affect predictions and evaluation metrics. Explainable AI and counterfactual explanation methods are typically handled separately and require additional manual coding, making the workflow fragmented and difficult to interpret.
 
-Dataset Analyzer Toolbox addresses this problem by integrating the entire workflow into a single Plotly Dash application. The platform combines data exploration, preprocessing, model training, explainability analysis, and counterfactual scenario simulation within one interactive interface. This allows users to observe how feature-level changes influence model predictions and test metrics, enabling a more interpretable and analysis-driven machine learning workflow.
+Data Analyzer Toolbox addresses this problem by integrating the entire workflow into a single Plotly Dash application. The platform combines data exploration, preprocessing, model training, explainability analysis, and counterfactual scenario simulation within one interactive interface. This allows users to observe how feature-level changes influence model predictions and test metrics, enabling a more interpretable and analysis-driven machine learning workflow.
 
 ## Data
 
@@ -50,7 +50,8 @@ Once launched the user can, end-to-end:
 
 ## Requirements
 
-- Python **3.10+** (developed and tested with the system `python3` on Ubuntu 22.04).
+- Python **3.10 or 3.11** (recommended)
+- Tested on Ubuntu 22.04 with Python 3.11
 - `pip` and `venv` available on the path.
 - Network access needed (to fetch pip wheels and, if a sample dataset is selected).
 
@@ -62,7 +63,7 @@ After cloning, run the bundled setup script from the repo root:
 
 ```bash
 git clone <repo-url>
-cd dataset-analyzer-toolbox
+cd data-analyzer-toolbox
 ./setup.sh
 ```
 

@@ -5,7 +5,7 @@ echo "Dataset Analyzer Toolbox - Setup"
 
 if [ ! -d "venv" ]; then
     echo "Creating Virtual Environment: 'venv'"
-    python3 -m venv venv
+    python3.11 -m venv venv
 else
     echo "Virtual Environment 'venv' Already Exists, Skipping Creation!"
 fi
