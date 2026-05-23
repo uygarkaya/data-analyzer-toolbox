@@ -93,6 +93,40 @@ To stop the server, press `Ctrl+C` in the terminal.
 
 If `venv/` is already active in your shell, you can skip the script and run `python3 main.py` directly.
 
+## Running with Docker
+
+A `Dockerfile` is provided to run the application in a containerized environment without installing Python or dependencies locally. This is the recommended setup for a clean and reproducible installation.
+
+Requirements: a working Docker installation (Docker Desktop on macOS/Windows, or Docker Engine on Linux).
+
+**1. Build the Image** (from the repo root):
+
+```bash
+docker build -t data-analyzer-toolbox .
+```
+
+This single command performs every step needed to go from a fresh clone to a runnable image — it installs the pinned dependencies from `requirements-dev.txt` and copies the application source. No `.env` file or manual setup is required; the image bakes in sensible defaults (`HOST=0.0.0.0`, `PORT=8050`, and the bundled dataset/model registry paths).
+
+**2. Run the Container**:
+
+```bash
+docker run --rm -p 8050:8050 data-analyzer-toolbox
+```
+
+Then open <http://localhost:8050> in your browser. Press `Ctrl+C` to stop the container.
+
+**Overriding Settings** — custom registries:
+
+```bash
+docker run --rm -p 9000:9000 -e PORT=9000 data-analyzer-toolbox
+```
+
+You can also mount a local `.env` file instead:
+
+```bash
+docker run --rm -p 8050:8050 --env-file .env data-analyzer-toolbox
+```
+
 ### Environment variables
 
 The four variables in `.env` are required at startup — `Environment._load_required_env_variables` raises if any are missing:
