@@ -13,7 +13,7 @@ class WhatIf:
             [
                 dbc.CardHeader(
                     html.Span(
-                        "Configure Simulation",
+                        "Configure Counterfactual Scenario",
                         style={"fontWeight": "700", "fontSize": "14px"},
                     )
                 ),
@@ -39,10 +39,10 @@ class WhatIf:
                                         dcc.Dropdown(
                                             id="wi-pert-type",
                                             options=[
-                                                {"label": "Scale (multiply by factor)", "value": "scale"},
-                                                {"label": "Gaussian noise (× std)", "value": "noise"},
+                                                {"label": "Set Feature Value (counterfactual)", "value": "set_value"},
+                                                {"label": "Gaussian Noise (× std)", "value": "noise"},
                                             ],
-                                            value="scale",
+                                            value="set_value",
                                             clearable=False,
                                             style={"fontSize": "13px"},
                                         ),
@@ -73,12 +73,7 @@ class WhatIf:
                                     style={"fontWeight": "600", "fontSize": "12px",
                                            "display": "block", "marginBottom": "6px"},
                                 ),
-                                dcc.Slider(
-                                    id="wi-pert-param",
-                                    min=-1, max=1, step=0.01, value=0,
-                                    marks={},
-                                    tooltip={"placement": "bottom", "always_visible": True},
-                                ),
+                                html.Div(id="wi-intervention-control"),
                             ],
                         ),
                         html.Hr(style={**SECTION_DIVIDER_STYLE, "margin": "16px 0"}),
@@ -117,7 +112,7 @@ class WhatIf:
             [
                 dbc.CardHeader(
                     html.Span(
-                        "Performance: Baseline vs Simulated",
+                        "Performance: Baseline vs Counterfactual",
                         style={"fontWeight": "700", "fontSize": "14px"},
                     )
                 ),

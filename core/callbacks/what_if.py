@@ -17,14 +17,14 @@ def _safe_cols(df: pd.DataFrame) -> pd.DataFrame:
     df.columns = [re.sub(r"[\[\]<>]", "_", str(c)) for c in df.columns]
     return df
 
-def _apply_perturbation(series: pd.Series, pert_type: str, params: dict, rng) -> pd.Series:
-    s = pd.to_numeric(series, errors="coerce").astype(float)
-    if pert_type == "scale":
-        return s * float(params.get("factor", 1.0))
-    if pert_type == "noise":
+def _apply_intervention(series: pd.Series, mode: str, params: dict, rng) -> pd.Series:
+    if mode == "set_value":
+        return pd.Series([params.get("value")] * len(series), index=series.index)
+    if mode == "noise":
+        s = pd.to_numeric(series, errors="coerce").astype(float)
         sigma = float(params.get("sigma_ratio", 0.0)) * (float(s.std() or 0.0) or 1.0)
         return s + rng.normal(0.0, sigma, size=len(s))
-    return s
+    return series
 
 def _classification_metrics(y_true, y_pred) -> dict:
     avg = "binary" if len(np.unique(y_true)) <= 2 else "weighted"
@@ -138,49 +138,105 @@ class WhatIfCallbacks:
                 return VISIBLE, HIDDEN, [], None
             feature_cols = model.get("feature_cols") or features.get("feature_cols") or []
             X_test = pd.DataFrame(features.get("X_test", []))
-            numeric_cols = [
-                c for c in feature_cols
-                if c in X_test.columns and pd.api.types.is_numeric_dtype(X_test[c])
-            ]
-            opts = [{"label": c, "value": c} for c in numeric_cols]
-            default = numeric_cols[0] if numeric_cols else None
+            available = [c for c in feature_cols if c in X_test.columns]
+            opts = [{"label": c, "value": c} for c in available]
+            default = available[0] if available else None
             return HIDDEN, VISIBLE, opts, default
 
         @self.view.app.callback(
-            Output("wi-pert-param", "min"),
-            Output("wi-pert-param", "max"),
-            Output("wi-pert-param", "step"),
-            Output("wi-pert-param", "value"),
-            Output("wi-pert-param", "marks"),
-            Output("wi-pert-param", "disabled"),
+            Output("wi-intervention-control", "children"),
             Output("wi-pert-param-label", "children"),
             Output("wi-pert-param-wrap", "style"),
             Input("wi-pert-type", "value"),
             Input("wi-feature-select", "value"),
             State("fe-stored-features", "data"),
         )
-        def configure_slider(pert_type, feature, features):
+        def configure_intervention_control(pert_type, feature, features):
+            hidden = {"display": "none"}
+            shown = {"display": "block"}
             if not features or not feature:
-                return 0, 1, 0.01, 0, {}, True, "Pick a Feature First", {"display": "none"}
+                return None, "Pick a Feature First", hidden
 
             X_test = pd.DataFrame(features["X_test"])
             if feature not in X_test.columns:
-                return 0, 1, 0.01, 0, {}, True, "Feature not Found!", {"display": "none"},
+                return None, "Feature not Found!", hidden
 
-            col = pd.to_numeric(X_test[feature], errors="coerce").dropna()
-            if col.empty:
-                return 0, 1, 0.01, 0, {}, True, "Feature Has no Numeric Values!", {"display": "none"},
+            col = X_test[feature]
+            is_numeric = pd.api.types.is_numeric_dtype(col)
 
-            wrap_style = {"display": "block"}
-            if pert_type == "scale":
-                m = {0: "0×", 0.5: "0.5×", 1: "1×", 1.5: "1.5×", 2: "2×", 3: "3×"}
-                return 0.0, 3.0, 0.05, 1.0, m, False, f"Multiplier for '{feature}'", wrap_style
+            if pert_type == "set_value":
+                if is_numeric:
+                    num = pd.to_numeric(col, errors="coerce").dropna()
+                    if num.empty:
+                        return (
+                            dbc.Alert("Feature has no numeric values.", color="warning"),
+                            "", shown,
+                        )
+                    lo, hi = float(num.min()), float(num.max())
+                    default = float(num.median())
+                    if hi <= lo:
+                        hi = lo + 1.0
+                    span = hi - lo
+                    step = span / 200.0
+                    mid = (lo + hi) / 2.0
+                    marks = {
+                        lo: {"label": f"{lo:.4g}"},
+                        mid: {"label": f"{mid:.4g}"},
+                        hi: {"label": f"{hi:.4g}"},
+                    }
+                    ctrl = html.Div(
+                        [
+                            dcc.Slider(
+                                id="wi-intervention-value",
+                                min=lo, max=hi, step=step, value=default,
+                                marks=marks,
+                                tooltip={"placement": "bottom", "always_visible": True},
+                                updatemode="drag",
+                            ),
+                        ],
+                        style={"padding": "4px 6px 0 6px"},
+                    )
+                    return ctrl, f"Set '{feature}' to (observed range {lo:.4g} – {hi:.4g}, median {default:.4g})", shown
+
+                uniques = sorted(col.dropna().astype(str).unique().tolist())
+                if not uniques:
+                    return (
+                        dbc.Alert("Feature has no values to intervene on.", color="warning"),
+                        "", shown,
+                    )
+                ctrl = dcc.Dropdown(
+                    id="wi-intervention-value",
+                    options=[{"label": v, "value": v} for v in uniques],
+                    value=uniques[0],
+                    clearable=False,
+                    style={"fontSize": "13px"},
+                )
+                return ctrl, f"Set '{feature}' to", shown
 
             if pert_type == "noise":
-                m = {0: "0", 0.25: "0.25×", 0.5: "0.5×", 1: "1×", 1.5: "1.5×", 2: "2×"}
-                return 0.0, 2.0, 0.05, 0.5, m, False, f"Noise Level (× std) for '{feature}'", wrap_style
+                if not is_numeric:
+                    return (
+                        dbc.Alert("Gaussian Noise Applies to Numeric Features Only!",
+                                  color="warning"),
+                        "", shown,
+                    )
+                num = pd.to_numeric(col, errors="coerce").dropna()
+                if num.empty:
+                    return (
+                        dbc.Alert("Feature has no numeric values.", color="warning"),
+                        "", shown,
+                    )
+                marks = {0: "0", 0.25: "0.25×", 0.5: "0.5×",
+                         1: "1×", 1.5: "1.5×", 2: "2×"}
+                ctrl = dcc.Slider(
+                    id="wi-intervention-value",
+                    min=0.0, max=2.0, step=0.05, value=0.5,
+                    marks=marks,
+                    tooltip={"placement": "bottom", "always_visible": True},
+                )
+                return ctrl, f"Gaussian Noise Level (× std) For '{feature}'", shown
 
-            return 0, 1, 0.01, 0, {}, True, "", {"display": "none"}
+            return None, "", hidden
 
         @self.view.app.callback(
             Output("wi-metrics", "children"),
@@ -189,13 +245,13 @@ class WhatIfCallbacks:
             Input("wi-reset-btn", "n_clicks"),
             State("wi-feature-select", "value"),
             State("wi-pert-type", "value"),
-            State("wi-pert-param", "value"),
+            State("wi-intervention-value", "value"),
             State("wi-sample-frac", "value"),
             State("stored-model", "data"),
             State("fe-stored-features", "data"),
             prevent_initial_call=True,
         )
-        def run_simulation(_run, _reset, feature, pert_type, param,
+        def run_simulation(_run, _reset, feature, pert_type, intervention_value,
                            sample_frac, model, features):
             triggered = callback_context.triggered_id if hasattr(callback_context, "triggered_id") \
                 else (callback_context.triggered[0]["prop_id"].split(".")[0]
@@ -221,25 +277,51 @@ class WhatIfCallbacks:
                     return dbc.Alert("Test Set is Empty!", color="warning"), ""
 
                 params = {}
-                if pert_type == "scale":
-                    params["factor"] = float(1.0 if param is None else param)
+                if pert_type == "set_value":
+                    is_num = pd.api.types.is_numeric_dtype(X_test[feature])
+                    if intervention_value is None or intervention_value == "":
+                        if is_num:
+                            num = pd.to_numeric(X_test[feature], errors="coerce").dropna()
+                            if num.empty:
+                                return dbc.Alert("Feature has no numeric values.",
+                                                 color="warning"), ""
+                            params["value"] = float(num.median())
+                        else:
+                            uniques = X_test[feature].dropna().astype(str).unique().tolist()
+                            if not uniques:
+                                return dbc.Alert("Feature has no values to intervene on.",
+                                                 color="warning"), ""
+                            params["value"] = uniques[0]
+                    elif is_num:
+                        try:
+                            params["value"] = float(intervention_value)
+                        except (TypeError, ValueError):
+                            num = pd.to_numeric(X_test[feature], errors="coerce").dropna()
+                            params["value"] = float(num.median()) if not num.empty else 0.0
+                    else:
+                        params["value"] = intervention_value
                 elif pert_type == "noise":
-                    params["sigma_ratio"] = float(param or 0.0)
+                    params["sigma_ratio"] = float(intervention_value or 0.0)
+                else:
+                    return dbc.Alert(f"Unknown intervention type: {pert_type}",
+                                     color="warning"), ""
 
+                rng = np.random.default_rng(42)
                 frac = float(sample_frac or 100) / 100.0
                 X_pert = X_test.copy()
                 if frac >= 1.0:
-                    X_pert[feature] = _apply_perturbation(
-                        X_test[feature], pert_type, params, np.random.default_rng()
-                    ).values
+                    new_values = _apply_intervention(
+                        X_test[feature], pert_type, params, rng
+                    )
+                    X_pert[feature] = new_values.values
                     perturbed_count = n
                 else:
                     k = max(1, int(round(n * frac)))
-                    perturb_idx = np.random.default_rng().choice(n, size=k, replace=False)
-                    perturbed_values = _apply_perturbation(
-                        X_test[feature].iloc[perturb_idx], pert_type, params, np.random.default_rng()
+                    perturb_idx = rng.choice(n, size=k, replace=False)
+                    new_values = _apply_intervention(
+                        X_test[feature].iloc[perturb_idx], pert_type, params, rng
                     )
-                    X_pert.loc[perturb_idx, feature] = perturbed_values.values
+                    X_pert.loc[perturb_idx, feature] = new_values.values
                     perturbed_count = k
 
                 X_base_safe = _safe_cols(X_test)
@@ -302,24 +384,45 @@ class WhatIfCallbacks:
                     metrics = dbc.Alert(f"Unknown Task Type: {task}", color="warning")
 
                 fig_dist = go.Figure()
-                fig_dist.add_trace(go.Histogram(
-                    x=pd.to_numeric(X_test[feature], errors="coerce"),
-                    name="Original",
-                    marker=dict(color="#0D6EFD", line=dict(width=0)),
-                    opacity=0.75,
-                    nbinsx=40,
-                ))
-                fig_dist.add_trace(go.Histogram(
-                    x=pd.to_numeric(X_pert[feature], errors="coerce"),
-                    name="Perturbed",
-                    marker=dict(color="#FD7E14", line=dict(width=0)),
-                    opacity=0.75,
-                    nbinsx=40,
-                ))
-                fig_dist.update_layout(
-                    barmode="overlay",
-                    **_figure_layout(f"Feature Distribution - {feature}"),
-                )
+                if pd.api.types.is_numeric_dtype(X_test[feature]):
+                    fig_dist.add_trace(go.Histogram(
+                        x=pd.to_numeric(X_test[feature], errors="coerce"),
+                        name="Original",
+                        marker=dict(color="#0D6EFD", line=dict(width=0)),
+                        opacity=0.75,
+                        nbinsx=40,
+                    ))
+                    fig_dist.add_trace(go.Histogram(
+                        x=pd.to_numeric(X_pert[feature], errors="coerce"),
+                        name="Counterfactual",
+                        marker=dict(color="#FD7E14", line=dict(width=0)),
+                        opacity=0.75,
+                        nbinsx=40,
+                    ))
+                    fig_dist.update_layout(
+                        barmode="overlay",
+                        **_figure_layout(f"Feature Distribution - {feature}"),
+                    )
+                else:
+                    base_counts = X_test[feature].astype(str).value_counts()
+                    pert_counts = X_pert[feature].astype(str).value_counts()
+                    cats = sorted(set(base_counts.index) | set(pert_counts.index))
+                    fig_dist.add_trace(go.Bar(
+                        x=cats,
+                        y=[int(base_counts.get(c, 0)) for c in cats],
+                        name="Original",
+                        marker=dict(color="#0D6EFD"),
+                    ))
+                    fig_dist.add_trace(go.Bar(
+                        x=cats,
+                        y=[int(pert_counts.get(c, 0)) for c in cats],
+                        name="Counterfactual",
+                        marker=dict(color="#FD7E14"),
+                    ))
+                    fig_dist.update_layout(
+                        barmode="group",
+                        **_figure_layout(f"Feature Distribution - {feature}"),
+                    )
 
                 if task == "classification":
                     base_counts = pd.Series(y_base_pred).value_counts()
@@ -335,7 +438,7 @@ class WhatIfCallbacks:
                     fig_pred.add_trace(go.Bar(
                         x=[str(c) for c in all_classes],
                         y=[int(pert_counts.get(c, 0)) for c in all_classes],
-                        name="Perturbed",
+                        name="Counterfactual",
                         marker=dict(color="#FD7E14"),
                     ))
                     fig_pred.update_layout(
@@ -349,7 +452,7 @@ class WhatIfCallbacks:
                         y=y_pert_pred.astype(float),
                         mode="markers",
                         marker=dict(color="#FD7E14", size=7, opacity=0.7, line=dict(width=0)),
-                        name="Perturbed",
+                        name="Counterfactual",
                     ))
                     lo = float(min(np.min(y_base_pred), np.min(y_pert_pred)))
                     hi = float(max(np.max(y_base_pred), np.max(y_pert_pred)))
@@ -358,9 +461,9 @@ class WhatIfCallbacks:
                         line=dict(color="#0D6EFD", dash="dash", width=2),
                         name="Original (y = x)",
                     ))
-                    layout = _figure_layout("Predictions: original vs perturbed")
+                    layout = _figure_layout("Predictions: original vs counterfactual")
                     layout["xaxis"] = {**layout["xaxis"], "title": dict(text="Original", font=dict(size=11))}
-                    layout["yaxis"] = {**layout["yaxis"], "title": dict(text="Perturbed", font=dict(size=11))}
+                    layout["yaxis"] = {**layout["yaxis"], "title": dict(text="Counterfactual", font=dict(size=11))}
                     fig_pred.update_layout(**layout)
 
                 viz = dbc.Row([
