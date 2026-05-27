@@ -1,24 +1,22 @@
 # Data Analyzer Toolbox
 
-An interactive Plotly Dash web application for end-to-end data analysis: exploration, cleaning, feature engineering, model training, explainability, what-if simulation, and artifact export — all from a single browser-based UI.
-
----
+An interactive Plotly Dash web application for end-to-end data analysis: exploration, cleaning, feature engineering, model training, explainability, what-if simulation, and artifact export.
 
 ## Problem
 
-Practitioners working with tabular data often rely on multiple notebooks and scripts for data analysis, model training, and evaluation. However, the main challenge is not only training a high-performing model, but also understanding why the model makes certain decisions and how changes in the data affect predictions and evaluation metrics. Explainable AI and counterfactual explanation methods are typically handled separately and require additional manual coding, making the workflow fragmented and difficult to interpret.
+Specialists working with tabular data often focus primarily on improving model accuracy, while the impact of different data conditions and feature changes on model behavior is often overlooked. Questions such as *“How would the model perform if it were trained on a different data distribution?”* or *“How would specific feature changes affect predictions and evaluation metrics?”* are usually not explored in a systematic and interpretable way within traditional machine learning workflows.
 
-Data Analyzer Toolbox addresses this problem by integrating the entire workflow into a single Plotly Dash application. The platform combines data exploration, preprocessing, model training, explainability analysis, and counterfactual scenario simulation within one interactive interface. This allows users to observe how feature-level changes influence model predictions and test metrics, enabling a more interpretable and analysis-driven machine learning workflow.
+Data Analyzer Toolbox was developed to address this limitation by integrating data exploration, preprocessing, model training, explainability analysis, and counterfactual scenario simulation into a single interactive Plotly Dash application. The platform enables users to analyze how feature-level changes influence model predictions and performance metrics, supporting a more interpretable, scenario-driven, and analysis-oriented machine learning workflow.
 
 ## Data
 
 The application accepts two ingestion modes:
 
-1. **Built-in Sample Datasets** — registered in `configuration/assets/datasets.json`. The default registry currently includes:
-   - *Chicago Traffic Crashes* — classification of crash severity from weather, lighting, road, and time features.
-   - *Auto MPG* — regression for vehicle fuel efficiency (miles-per-gallon).
-   - *AI4I 2020 Predictive Maintenance* — binary classification of machine component failure.
-2. **Arbitrary URL** — fetches a CSV from a user-supplied HTTP(S) endpoint.
+1. **Built-in Sample Datasets** - registered in `configuration/assets/datasets.json`. The default registry currently includes:
+   - Chicago Traffic Crashes - classification of crash severity from weather, lighting, road, and time features.
+   - Auto MPG - regression for vehicle fuel efficiency (miles-per-gallon).
+   - AI4I 2020 Predictive Maintenance - binary classification of machine component failure.
+2. **Arbitrary URL** - fetches a CSV from a user-supplied HTTP(S) endpoint.
 
 To ensure smooth interaction and responsive visualization performance inside the Dash interface, datasets containing more than 2,000 rows are automatically downsampled to a maximum of 2,000 samples using random_state=42. 
 
@@ -31,7 +29,7 @@ The pipeline is split across seven tabs, each backed by a dedicated component (`
 | **Data Explorer** | Dataset overview, schema, missing-value summary, EDA plots (distributions, correlations, scatter, box). |
 | **Data Processing** | Null handling, deduplication, column rename, column drop, dtype coercion. Mutations write back to the shared store so other tabs refresh. |
 | **Feature Engineering** | Encoding (one-hot, ordinal), scaling, derived features. |
-| **Train-Evaluate Model** | Model selection from `configuration/assets/models.json` (Logistic/Ridge baselines, Random Forest, XGBoost — both classification and regression). Hyperparameters are exposed as UI fields and merged with sensible defaults. Train/test split, fit, and metrics (accuracy / F1 / ROC-AUC for classification; RMSE / MAE / R² for regression). |
+| **Train-Evaluate Model** | Model selection from `configuration/assets/models.json` (Logistic/Ridge baselines, Random Forest, XGBoost - both classification and regression). Hyperparameters are exposed as UI fields and merged with sensible defaults. Train/test split, fit, and metrics (accuracy / F1 / ROC-AUC for classification; RMSE / MAE / R² for regression). |
 | **Explainability** | SHAP-based global and local explanations. |
 | **What-If Simulation** | Interactive prediction: edit feature values and observe how the trained model's output changes. |
 | **Download** | Export the processed dataset and trained-model artifacts. |
@@ -45,8 +43,6 @@ Once launched the user can, end-to-end:
 - Train a baseline, tree, or gradient-boosted model with adjustable hyperparameters and inspect classification or regression metrics on a held-out split.
 - Generate SHAP explanations for the trained model and probe its behavior with what-if perturbations.
 - Export the cleaned dataset and model artifacts for downstream use.
-
----
 
 ## Requirements
 
@@ -105,7 +101,7 @@ Requirements: a working Docker installation (Docker Desktop on macOS/Windows, or
 docker build -t data-analyzer-toolbox .
 ```
 
-This single command performs every step needed to go from a fresh clone to a runnable image — it installs the pinned dependencies from `requirements-dev.txt` and copies the application source. No `.env` file or manual setup is required; the image bakes in sensible defaults (`HOST=0.0.0.0`, `PORT=8050`, and the bundled dataset/model registry paths).
+This single command performs every step needed to go from a fresh clone to a runnable image - it installs the pinned dependencies from `requirements-dev.txt` and copies the application source. No `.env` file or manual setup is required; the image bakes in sensible defaults (`HOST=0.0.0.0`, `PORT=8050`, and the bundled dataset/model registry paths).
 
 **2. Run the Container**:
 
@@ -115,7 +111,7 @@ docker run --rm -p 8050:8050 data-analyzer-toolbox
 
 Then open <http://localhost:8050> in your browser. Press `Ctrl+C` to stop the container.
 
-**Overriding Settings** — custom registries:
+**Overriding Settings** - custom registries:
 
 ```bash
 docker run --rm -p 9000:9000 -e PORT=9000 data-analyzer-toolbox
@@ -129,7 +125,7 @@ docker run --rm -p 8050:8050 --env-file .env data-analyzer-toolbox
 
 ### Environment variables
 
-The four variables in `.env` are required at startup — `Environment._load_required_env_variables` raises if any are missing:
+The four variables in `.env` are required at startup - `Environment._load_required_env_variables` raises if any are missing:
 
 | Variable | Purpose |
 | --- | --- |
@@ -144,7 +140,7 @@ Edit `.env` to bind on a different interface/port (e.g., `HOST="0.0.0.0"` for LA
 
 ```
 .
-├── main.py                          # entry point — wires Configuration + Toolbox + callbacks
+├── main.py                          # entry point - wires Configuration + Toolbox + callbacks
 ├── setup.sh                         # one-shot installer (venv, deps, .env)
 ├── run.sh                           # activates venv and runs main.py
 ├── requirements-dev.txt             # pinned dependencies
